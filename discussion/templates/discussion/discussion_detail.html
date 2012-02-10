@@ -1,0 +1,19 @@
+{% extends "discussion/base.html" %}
+
+{% block page_content %}
+<h2>{{ object }}</h2>
+<div>
+    {% for post in object.post_set.all %}
+    <div>
+        <h3><a href="{% url post slug=post.slug discussion_slug=object.slug %}">{{ post }}</a></h3>
+        <p>{{ post.body }}</p>
+        <div>
+            {% for comment in post.comment_set.all %}
+            <p>{{ comment.body }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+

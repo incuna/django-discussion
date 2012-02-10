@@ -1,0 +1,9 @@
+{% extends "discussion/base.html" %}
+
+{% block page_content %}
+<ul>
+    {% for obj in object_list %}
+    <li><a href="{% url discussion slug=obj.slug %}">{{ obj }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}
