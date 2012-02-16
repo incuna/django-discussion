@@ -58,6 +58,10 @@ class Search(SearchFormMixin, BaseListView, FormView):
     model = Post
     template_name = 'discussion/search.html'
 
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form,
+                                        object_list=self.get_queryset()))
+
     def form_valid(self, form):
         """
         Using the name field try to find any posts that match.
