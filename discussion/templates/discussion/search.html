@@ -1,0 +1,15 @@
+{% extends "discussion/base.html" %}
+
+{% block page_content %}
+{% if object_list %}
+<h2>Results</h2>
+<ul>
+    {% for post in object_list %}
+    <li><a href="{% url post discussion_slug=post.discussion.slug slug=post.slug %}">{{ post.name }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No results</p>
+{% endif %}
+{% endblock %}
+

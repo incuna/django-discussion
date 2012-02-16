@@ -6,4 +6,11 @@
     <li><a href="{% url discussion slug=obj.slug %}">{{ obj }}</a></li>
     {% endfor %}
 </ul>
+
+<h2>Global Search</h2>
+<form action="{% url search %}" method="POST">
+    {% csrf_token %}
+    {{ search_form }}
+    <input type="submit" value="Submit">
+</form>
 {% endblock %}
