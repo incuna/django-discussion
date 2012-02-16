@@ -53,7 +53,7 @@ class PostView(CreateView):
         return reverse('post', kwargs=kwargs)
 
 
-class Search(BaseListView, FormView):
+class Search(SearchFormMixin, BaseListView, FormView):
     form_class = SearchForm
     model = Post
     template_name = 'discussion/search.html'

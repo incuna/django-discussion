@@ -1,6 +1,15 @@
 {% extends "discussion/base.html" %}
 
 {% block page_content %}
+<h2>Global Search</h2>
+<form action="{% url search %}" method="POST">
+    {% csrf_token %}
+    {{ search_form }}
+    <input type="submit" value="Submit">
+</form>
+
+<hr>
+
 {% if object_list %}
 <h2>Results</h2>
 <ul>
