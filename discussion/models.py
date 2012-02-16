@@ -9,6 +9,7 @@ class Discussion(models.Model):
     def __unicode__(self):
         return self.name
 
+
 class Post(models.Model):
     discussion = models.ForeignKey(Discussion)
     name = models.CharField(max_length=255)
@@ -16,6 +17,7 @@ class Post(models.Model):
 
     def __unicode__(self):
         return self.name
+
 
 class Comment(models.Model):
     post = models.ForeignKey(Post)
