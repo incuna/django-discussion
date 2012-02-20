@@ -4,8 +4,11 @@
 <h2>{{ post.name }}</h2>
 {% for comment in post.comment_set.all %}
 <p>{{ comment.body }}</p>
+{% if comment.comment_file %}
+<a href="{{ MEDIA_URL }}{{ comment.comment_file.name }}">Attached File</a>
+{% endif %}
 {% endfor %}
-<form action="" method="POST">
+<form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Submit">

@@ -23,6 +23,8 @@ class Comment(models.Model):
     post = models.ForeignKey(Post)
     user = models.ForeignKey(User)
     body = models.TextField()
+    comment_file = models.FileField(upload_to='uploads/comments',
+                                    blank=True, null=True)
 
     def __unicode__(self):
         return 'Comment on %s by %s' % (self.post.name, self.user)
