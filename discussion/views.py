@@ -1,9 +1,11 @@
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.views.generic import CreateView, DetailView, ListView, FormView
 from django.views.generic.list import BaseListView
 
 from discussion.forms import CommentForm, SearchForm
 from discussion.models import Discussion, Comment, Post
+from discussion.utils import class_view_decorator
 
 
 class SearchFormMixin(object):
@@ -14,18 +16,22 @@ class SearchFormMixin(object):
         return context
 
 
+@class_view_decorator(login_required)
 class DiscussionList(SearchFormMixin, ListView):
     model = Discussion
 
 
+@class_view_decorator(login_required)
 class DiscussionView(DetailView):
     model = Discussion
 
 
+@class_view_decorator(login_required)
 class PostList(ListView):
     model = Post
 
 
+@class_view_decorator(login_required)
 class PostView(CreateView):
     form_class = CommentForm
     model = Comment
@@ -53,6 +59,7 @@ class PostView(CreateView):
         return reverse('post', kwargs=kwargs)
 
 
+@class_view_decorator(login_required)
 class Search(SearchFormMixin, BaseListView, FormView):
     form_class = SearchForm
     model = Post
