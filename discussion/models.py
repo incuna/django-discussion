@@ -14,6 +14,8 @@ class Post(models.Model):
     discussion = models.ForeignKey(Discussion)
     name = models.CharField(max_length=255)
     slug = models.SlugField()
+    posts_file = models.FileField(upload_to='uploads/posts',
+                                  blank=True, null=True)
 
     def __unicode__(self):
         return self.name

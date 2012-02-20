@@ -9,6 +9,12 @@ class CommentForm(forms.ModelForm):
         model = Comment
 
 
+class PostForm(forms.ModelForm):
+    class Meta:
+        exclude = ('user', 'discussion')
+        model = Post
+
+
 class SearchForm(forms.ModelForm):
     class Meta:
         exclude = ('discussion', 'slug')

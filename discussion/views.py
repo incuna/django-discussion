@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.views.generic import CreateView, DetailView, ListView, FormView
 from django.views.generic.list import BaseListView
 
-from discussion.forms import CommentForm, SearchForm
+from discussion.forms import CommentForm, PostForm, SearchForm
 from discussion.models import Discussion, Comment, Post
 from discussion.utils import class_view_decorator
 
@@ -24,6 +24,30 @@ class DiscussionList(SearchFormMixin, ListView):
 @class_view_decorator(login_required)
 class DiscussionView(DetailView):
     model = Discussion
+
+
+@class_view_decorator(login_required)
+class CreatePost(CreateView):
+    form_class = PostForm
+    model = Post
+
+    def get_form_kwargs(self):
+        kwargs = super(CreatePost, self).get_form_kwargs()
+        instance = self.model(user=self.request.user, discussion=self.get_discussion())
+        kwargs.update({'instance': instance})
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super(CreatePost, self).get_context_data(**kwargs)
+        context['discussion'] = self.get_discussion()
+        return context
+
+    def get_discussion(self):
+        return Discussion.objects.get(slug=self.kwargs['discussion_slug'])
+
+    def get_success_url(self):
+        kwargs = {'slug': self.kwargs['discussion_slug']}
+        return reverse('discussion', kwargs=kwargs)
 
 
 @class_view_decorator(login_required)

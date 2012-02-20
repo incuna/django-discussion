@@ -1,0 +1,13 @@
+{% extends "discussion/base.html" %}
+
+{% block page_content %}
+<h2>Add a Post</h2>
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form>
+
+<a href="{% url discussion slug=discussion.slug %}">Back to {{ discussion }}</a>
+{% endblock %}
+
