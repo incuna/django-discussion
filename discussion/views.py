@@ -54,6 +54,17 @@ class CreatePost(CreateView):
 class PostList(ListView):
     model = Post
 
+    def get_context_data(self, **kwargs):
+        context = super(PostList, self).get_context_data(**kwargs)
+        context['discussion'] = self.get_discussion()
+        return context
+
+    def get_discussion(self):
+        return Discussion.objects.get(slug=self.kwargs['discussion_slug'])
+
+    def get_queryset(self):
+        return self.model.objects.filter(discussion=self.get_discussion())
+
 
 @class_view_decorator(login_required)
 class PostView(CreateView):
