@@ -16,6 +16,7 @@ class Post(models.Model):
     user = models.ForeignKey(User)
     name = models.CharField(max_length=255)
     slug = models.SlugField()
+    body = models.TextField()
     posts_file = models.FileField(upload_to='uploads/posts',
                                   blank=True, null=True)
 
