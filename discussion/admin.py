@@ -13,7 +13,12 @@ class PostAdmin(admin.ModelAdmin):
     list_filter = ('discussion',)
 
 
-admin.site.register(Discussion)
+class DiscussionAdmin(admin.ModelAdmin):
+    prepopulated_fields = {
+        'slug': ('name',)
+    }
+
+admin.site.register(Discussion, DiscussionAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Comment)
 
