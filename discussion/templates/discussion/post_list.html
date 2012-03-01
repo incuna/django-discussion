@@ -4,7 +4,7 @@
     <a href="{% url discussion_add_post discussion_slug=discussion.slug %}">Add a Post</a>
     <ul>
         {% for obj in object_list %}
-            <li><a href="{% url discussion_post slug=obj.slug discussion_slug=discussion.slug %}">{{ obj }}</a></li>
+            <li><a href="{% url discussion_post pk=obj.pk discussion_slug=discussion.slug %}">{{ obj }}</a></li>
         {% endfor %}
     </ul>
 {% endblock %}

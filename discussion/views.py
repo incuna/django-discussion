@@ -15,6 +15,20 @@ class SearchFormMixin(object):
         context['search_form'] = SearchForm()
         return context
 
+class DiscussionMixin(object):
+    discussion_slug = 'discussion_slug'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.discussion = self.get_discussion()
+        return super(DiscussionMixin, self).dispatch(request, *args, **kwargs)
+
+    def get_discussion(self):
+        return Discussion.objects.get(slug=self.kwargs[self.discussion_slug])
+
+    def get_queryset(self):
+        qs = super(PostList, self).get_queryset()
+        return qs.filter(discussion=self.discussion)
+
 
 @class_view_decorator(login_required)
 class DiscussionList(SearchFormMixin, ListView):
@@ -27,69 +41,65 @@ class DiscussionView(DetailView):
 
 
 @class_view_decorator(login_required)
-class CreatePost(CreateView):
+class CreatePost(DiscussionMixin, CreateView):
     form_class = PostForm
     model = Post
 
     def get_form_kwargs(self):
         kwargs = super(CreatePost, self).get_form_kwargs()
-        instance = self.model(user=self.request.user, discussion=self.get_discussion())
+        instance = self.model(user=self.request.user, discussion=self.discussion)
         kwargs.update({'instance': instance})
         return kwargs
 
     def get_context_data(self, **kwargs):
         context = super(CreatePost, self).get_context_data(**kwargs)
-        context['discussion'] = self.get_discussion()
+        context['discussion'] = self.discussion
         return context
 
-    def get_discussion(self):
-        return Discussion.objects.get(slug=self.kwargs['discussion_slug'])
-
     def get_success_url(self):
-        kwargs = {'slug': self.kwargs['discussion_slug']}
+        kwargs = {'slug': self.kwargs[self.discussion_slug]}
         return reverse('discussion', kwargs=kwargs)
 
 
 @class_view_decorator(login_required)
-class PostList(ListView):
+class PostList(DiscussionMixin, ListView):
     model = Post
 
     def get_context_data(self, **kwargs):
         context = super(PostList, self).get_context_data(**kwargs)
-        context['discussion'] = self.get_discussion()
+        context['discussion'] = self.discussion
         return context
-
-    def get_discussion(self):
-        return Discussion.objects.get(slug=self.kwargs['discussion_slug'])
-
-    def get_queryset(self):
-        return self.model.objects.filter(discussion=self.get_discussion())
 
 
 @class_view_decorator(login_required)
-class PostView(CreateView):
+class PostView(DiscussionMixin, CreateView):
     form_class = CommentForm
     model = Comment
     template_name = 'discussion/post_detail.html'
 
+
+    def dispatch(self, request, *args, **kwargs):
+        self.post_obj = self.get_post()
+        return super(PostView, self).dispatch(request, *args, **kwargs)
+
     def get_form_kwargs(self):
         kwargs = super(PostView, self).get_form_kwargs()
-        instance = self.model(user=self.request.user, post=self.get_post())
+        instance = self.model(user=self.request.user, post=self.post_obj)
         kwargs.update({'instance': instance})
         return kwargs
 
     def get_context_data(self, **kwargs):
         context = super(PostView, self).get_context_data(**kwargs)
-        context['post'] = self.get_post()
+        context['post'] = self.post_obj
         return context
 
     def get_post(self):
-        return Post.objects.get(slug=self.kwargs['slug'])
+        return Post.objects.get(pk=self.kwargs['pk'])
 
     def get_success_url(self):
         kwargs = {
-            'slug': self.kwargs['slug'],
-            'discussion_slug': self.kwargs['discussion_slug']
+            'pk': self.kwargs['pk'],
+            'discussion_slug': self.kwargs[self.discussion_slug]
         }
         return reverse('discussion_post', kwargs=kwargs)
 
@@ -121,4 +131,3 @@ class Search(SearchFormMixin, BaseListView, FormView):
     def get_success_url(self):
         """Defined in case we ever get sent to it by accident"""
         return reverse('discussion_search')
-
