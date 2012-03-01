@@ -14,7 +14,6 @@ class Discussion(models.Model):
 class Post(models.Model):
     discussion = models.ForeignKey(Discussion)
     user = models.ForeignKey(User)
-    name = models.CharField(max_length=255)
     slug = models.SlugField()
     body = models.TextField()
     posts_file = models.FileField(upload_to='uploads/posts',
