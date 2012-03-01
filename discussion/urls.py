@@ -14,6 +14,6 @@ urlpatterns = patterns('discussion.views',
         url(r'^(?P<slug>[\w-]+)/$', DiscussionView.as_view(), name='discussion'),
         url(r'^(?P<discussion_slug>[\w-]+)/posts/$', PostList.as_view(), name='discussion_posts'),
         url(r'^(?P<discussion_slug>[\w-]+)/posts/add/$', CreatePost.as_view(), name='discussion_add_post'),
-        url(r'^(?P<discussion_slug>[\w-]+)/posts/(?P<slug>[\w-]+)/$', PostView.as_view(), name='discussion_post'),
+        url(r'^(?P<discussion_slug>[\w-]+)/posts/(?P<pk>[\d]+)/$', PostView.as_view(), name='discussion_post'),
     )))
 )

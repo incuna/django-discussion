@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.template.defaultfilters import date, time
 
 
 class Discussion(models.Model):
@@ -14,13 +15,17 @@ class Discussion(models.Model):
 class Post(models.Model):
     discussion = models.ForeignKey(Discussion)
     user = models.ForeignKey(User)
-    slug = models.SlugField()
     body = models.TextField()
     posts_file = models.FileField(upload_to='uploads/posts',
                                   blank=True, null=True)
+    time = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return self.name
+        return 'Post by {user} at {time} on {date}'.format(
+            user=self.user,
+            time=time(self.time),
+            date=date(self.time),
+        )
 
 
 class Comment(models.Model):
@@ -29,6 +34,11 @@ class Comment(models.Model):
     body = models.TextField()
     comment_file = models.FileField(upload_to='uploads/comments',
                                     blank=True, null=True)
+    time = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return 'Comment on %s by %s' % (self.post.name, self.user)
+        return 'Comment by {user} at {time} on {date}'.format(
+            user=self.user,
+            time=time(self.time),
+            date=date(self.time),
+        )
