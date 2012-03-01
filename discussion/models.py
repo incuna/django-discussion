@@ -33,4 +33,3 @@ class Comment(models.Model):
 
     def __unicode__(self):
         return 'Comment on %s by %s' % (self.post.name, self.user)
-
