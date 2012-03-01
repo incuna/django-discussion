@@ -1,18 +1,18 @@
 {% extends "discussion/base.html" %}
 
-{% block page_content %}
-<h2>{{ post.name }}</h2>
-{% for comment in post.comment_set.all %}
-<p>{{ comment.body }}</p>
-{% if comment.comment_file %}
-<a href="{{ MEDIA_URL }}{{ comment.comment_file.name }}">Attached File</a>
-{% endif %}
-{% endfor %}
-<form action="" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit">
-</form>
+{% block content %}
+    <h2>{{ post.name }}</h2>
+    {% for comment in post.comment_set.all %}
+        <p>{{ comment.body }}</p>
+        {% if comment.comment_file %}
+            <a href="{{ MEDIA_URL }}{{ comment.comment_file.name }}">Attached File</a>
+        {% endif %}
+    {% endfor %}
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Submit">
+    </form>
 
-<a href="{% url discussion slug=post.discussion.slug %}">Back to {{ post.discussion }}</a>
+    <a href="{% url discussion slug=post.discussion.slug %}">Back to {{ post.discussion }}</a>
 {% endblock %}

@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block page_content %}
-<a href="{% url create-post discussion_slug=discussion.slug %}">Add a Post</a>
-<ul>
-    {% for obj in object_list %}
-    <li><a href="{% url post slug=obj.slug discussion_slug=discussion.slug %}">{{ obj }}</a></li>
-    {% endfor %}
-</ul>
+{% block content %}
+    <a href="{% url create-post discussion_slug=discussion.slug %}">Add a Post</a>
+    <ul>
+        {% for obj in object_list %}
+            <li><a href="{% url post slug=obj.slug discussion_slug=discussion.slug %}">{{ obj }}</a></li>
+        {% endfor %}
+    </ul>
 {% endblock %}

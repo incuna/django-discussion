@@ -1,6 +1,6 @@
 {% extends "discussion/base.html" %}
 
-{% block page_content %}
+{% block content %}
 <h2>{{ object }}</h2>
 <div>
     <a href="{% url create-post discussion_slug=object.slug %}">Add a Post</a>
