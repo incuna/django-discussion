@@ -6,7 +6,7 @@ from discussion.views import (DiscussionList, DiscussionView,
 
 
 urlpatterns = patterns('discussion.views',
-    url(r'^$', DiscussionList.as_view()),
+    url(r'^$', DiscussionList.as_view(), name='home'),
     url(r'search/$', Search.as_view(), name='search'),
     url(r'^(?P<slug>[\w-]+)/$', DiscussionView.as_view(), name='discussion'),
     url(r'^(?P<discussion_slug>[\w-]+)/posts/$', PostList.as_view(), name='list-post'),
