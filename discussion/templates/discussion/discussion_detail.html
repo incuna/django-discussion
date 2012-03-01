@@ -3,10 +3,10 @@
 {% block content %}
 <h2>{{ object }}</h2>
 <div>
-    <a href="{% url create-post discussion_slug=object.slug %}">Add a Post</a>
+    <a href="{% url discussion_add_post discussion_slug=object.slug %}">Add a Post</a>
     {% for post in object.post_set.all %}
     <div>
-        <h3><a href="{% url post slug=post.slug discussion_slug=object.slug %}">{{ post }}</a></h3>
+        <h3><a href="{% url discussion_post slug=post.slug discussion_slug=object.slug %}">{{ post }}</a></h3>
         <p>{{ post.body }}</p>
         <div>
             {% for comment in post.comment_set.all %}

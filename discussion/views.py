@@ -91,7 +91,7 @@ class PostView(CreateView):
             'slug': self.kwargs['slug'],
             'discussion_slug': self.kwargs['discussion_slug']
         }
-        return reverse('post', kwargs=kwargs)
+        return reverse('discussion_post', kwargs=kwargs)
 
 
 @class_view_decorator(login_required)
@@ -120,5 +120,5 @@ class Search(SearchFormMixin, BaseListView, FormView):
 
     def get_success_url(self):
         """Defined in case we ever get sent to it by accident"""
-        return reverse('search')
+        return reverse('discussion_search')
 

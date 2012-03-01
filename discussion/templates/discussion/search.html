@@ -2,7 +2,7 @@
 
 {% block content %}
     <h2>Global Search</h2>
-    <form action="{% url search %}" method="POST">
+    <form action="{% url discussion_search %}" method="POST">
         {% csrf_token %}
         {{ search_form }}
         <input type="submit" value="Submit">
@@ -14,7 +14,7 @@
         <h2>Results</h2>
         <ul>
             {% for post in object_list %}
-            <li><a href="{% url post discussion_slug=post.discussion.slug slug=post.slug %}">{{ post.name }}</a></li>
+            <li><a href="{% url discussion_post discussion_slug=post.discussion.slug slug=post.slug %}">{{ post.name }}</a></li>
             {% endfor %}
         </ul>
     {% else %}
