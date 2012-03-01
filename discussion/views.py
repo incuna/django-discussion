@@ -19,11 +19,13 @@ class DiscussionMixin(object):
     discussion_slug = 'discussion_slug'
 
     def dispatch(self, request, *args, **kwargs):
-        self.discussion = self.get_discussion()
+        self.discussion = self.get_discussion(slug=kwargs[self.discussion_slug])
         return super(DiscussionMixin, self).dispatch(request, *args, **kwargs)
 
-    def get_discussion(self):
-        return Discussion.objects.get(slug=self.kwargs[self.discussion_slug])
+    def get_discussion(self, slug=None):
+        if slug is None:
+            slug = self.kwargs[self.discussion_slug]
+        return Discussion.objects.get(slug=slug)
 
     def get_queryset(self):
         qs = super(PostList, self).get_queryset()
