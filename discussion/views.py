@@ -15,6 +15,7 @@ class SearchFormMixin(object):
         context['search_form'] = SearchForm()
         return context
 
+
 class DiscussionMixin(object):
     discussion_slug = 'discussion_slug'
 
