@@ -18,7 +18,7 @@ class DiscussionAdmin(admin.ModelAdmin):
         'slug': ('name',)
     }
 
+
 admin.site.register(Discussion, DiscussionAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Comment)
-
