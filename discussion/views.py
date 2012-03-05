@@ -29,7 +29,7 @@ class DiscussionMixin(object):
         return Discussion.objects.get(slug=slug)
 
     def get_queryset(self):
-        qs = super(PostList, self).get_queryset()
+        qs = super(DiscussionMixin, self).get_queryset()
         return qs.filter(discussion=self.discussion)
 
 
