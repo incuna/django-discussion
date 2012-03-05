@@ -42,6 +42,12 @@ class DiscussionList(SearchFormMixin, ListView):
 class DiscussionView(DetailView):
     model = Discussion
 
+    def get_context_data(self, **kwargs):
+        context = super(DiscussionView, self).get_context_data(**kwargs)
+        context['comment_form'] = CommentForm()
+        context['post_form'] = PostForm()
+        return context
+
 
 @class_view_decorator(login_required)
 class CreatePost(DiscussionMixin, CreateView):

@@ -1,19 +1,28 @@
 {% extends "discussion/base.html" %}
+{% load url from future %}
 
 {% block content %}
 <h2>{{ object }}</h2>
 <div>
-    <a href="{% url discussion_add_post discussion_slug=object.slug %}">Add a Post</a>
+    <form action="{% url 'discussion_add_post' discussion_slug=object.slug %}">
+        {{ post_form }}
+        <input type="submit" value="Add a post" />
+    </form>
     {% for post in object.post_set.all %}
-    <div>
-        <h3><a href="{% url discussion_post pk=post.pk discussion_slug=object.slug %}">{{ post }}</a></h3>
-        <p>{{ post.body }}</p>
+        {% url 'discussion_post' pk=post.pk discussion_slug=object.slug as post_detail %}
         <div>
-            {% for comment in post.comment_set.all %}
-            <p>{{ comment.body }}</p>
-            {% endfor %}
+            <h3><a href="{{ post_detail }}">{{ post }}</a></h3>
+            <p>{{ post.body }}</p>
+            <div>
+                {% for comment in post.comment_set.all %}
+                <p>{{ comment.body }}</p>
+                {% endfor %}
+            </div>
+            <form action="{{ post_detail }}">
+                {{ comment_form }}
+                <input type="submit" value="Add a post" />
+            </form>
         </div>
-    </div>
     {% endfor %}
 </div>
 {% endblock %}
