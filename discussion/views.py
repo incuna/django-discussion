@@ -65,16 +65,6 @@ class CreatePost(DiscussionMixin, CreateView):
 
 
 @class_view_decorator(login_required)
-class PostList(DiscussionMixin, ListView):
-    model = Post
-
-    def get_context_data(self, **kwargs):
-        context = super(PostList, self).get_context_data(**kwargs)
-        context['discussion'] = self.discussion
-        return context
-
-
-@class_view_decorator(login_required)
 class PostView(DiscussionMixin, CreateView):
     form_class = CommentForm
     model = Comment
