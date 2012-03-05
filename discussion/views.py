@@ -80,9 +80,8 @@ class PostView(DiscussionMixin, CreateView):
     model = Comment
     template_name = 'discussion/post_detail.html'
 
-
     def dispatch(self, request, *args, **kwargs):
-        self.post_obj = self.get_post()
+        self.post_obj = self.get_post(kwargs['pk'])
         return super(PostView, self).dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
@@ -96,7 +95,9 @@ class PostView(DiscussionMixin, CreateView):
         context['post'] = self.post_obj
         return context
 
-    def get_post(self):
+    def get_post(self, pk=None):
+        if pk is None:
+            pk = self.kwargs['pk']
         return Post.objects.get(pk=self.kwargs['pk'])
 
     def get_success_url(self):
