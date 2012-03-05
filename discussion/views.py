@@ -98,7 +98,7 @@ class PostView(DiscussionMixin, CreateView):
     def get_post(self, pk=None):
         if pk is None:
             pk = self.kwargs['pk']
-        return Post.objects.get(pk=self.kwargs['pk'])
+        return Post.objects.get(pk=pk)
 
     def get_success_url(self):
         kwargs = {
