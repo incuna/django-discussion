@@ -12,6 +12,9 @@ class Discussion(models.Model):
     def __unicode__(self):
         return self.name
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('discussion', [self.slug])
 
 class Post(models.Model):
     discussion = models.ForeignKey(Discussion)
@@ -26,6 +29,10 @@ class Post(models.Model):
             time=time(self.time),
             date=date(self.time),
         )
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('discussion_post', [self.discussion.slug, str(self.id)])
 
     @property
     def attachment_filename(self):

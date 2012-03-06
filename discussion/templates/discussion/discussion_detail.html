@@ -19,7 +19,9 @@
                 {% endfor %}
             </div>
             <form action="{{ post_detail }}">
-                {{ comment_form }}
+                <fieldset>
+                    {{ comment_form }}
+                </fieldset>
                 <input type="submit" value="Add a post" />
             </form>
         </div>

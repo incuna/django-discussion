@@ -65,16 +65,13 @@ class CreatePost(DiscussionMixin, CreateView):
         context['discussion'] = self.discussion
         return context
 
-    def get_success_url(self):
-        kwargs = {'slug': self.kwargs[self.discussion_slug]}
-        return reverse('discussion', kwargs=kwargs)
-
-
 @class_view_decorator(login_required)
 class PostView(DiscussionMixin, CreateView):
     form_class = CommentForm
     model = Comment
     template_name = 'discussion/post_detail.html'
+    ajax_form_valid_template_name = 'discussion/_comment_detail.html'
+    ajax_form_invalid_template_name = 'discussion/_comment_form_fields.html'
 
     def dispatch(self, request, *args, **kwargs):
         self.post_obj = self.get_post(kwargs['pk'])
@@ -102,6 +99,21 @@ class PostView(DiscussionMixin, CreateView):
             'discussion_slug': self.kwargs[self.discussion_slug]
         }
         return reverse('discussion_post', kwargs=kwargs)
+
+    def form_valid(self, form):
+        if self.request.is_ajax():
+            self.object = form.save()
+            self.template_name = self.ajax_form_valid_template_name
+            return self.render_to_response(self.get_context_data(comment=self.object))
+        else:
+            return super(PostView, self).form_valid(form)
+
+    def form_invalid(self, form):
+       if self.request.is_ajax():
+           self.template_name = self.ajax_form_invalid_template_name
+           return self.render_to_response(self.get_context_data(form=form), status=400)
+       else:
+           return super(PostView, self).form_valid(form)
 
 
 @class_view_decorator(login_required)

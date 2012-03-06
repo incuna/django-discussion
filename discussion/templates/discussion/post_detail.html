@@ -7,8 +7,12 @@
     {% endfor %}
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form }}
+        <fieldset>
+            {% include 'discussion/_comment_form_fields.html' %}
+        </fieldset>
         <input type="submit" value="Submit">
     </form>
+
     <a href="{% url discussion slug=post.discussion.slug %}">Back to {{ post.discussion }}</a>
+
 {% endblock %}
