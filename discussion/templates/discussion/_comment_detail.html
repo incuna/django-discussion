@@ -1,0 +1,4 @@
+<h5>{{ comment.user.get_full_name }}</h5>
+<p>{{ comment.body }}</p>
+{% if comment.attachment %}<a href="{{ comment.attachment.url }}">{{ comment.attachment_filename }}</a>{% endif %}
+

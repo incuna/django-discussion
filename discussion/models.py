@@ -1,3 +1,4 @@
+import os 
 from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import date, time
@@ -16,8 +17,7 @@ class Post(models.Model):
     discussion = models.ForeignKey(Discussion)
     user = models.ForeignKey(User)
     body = models.TextField()
-    posts_file = models.FileField(upload_to='uploads/posts',
-                                  blank=True, null=True)
+    attachment = models.FileField(upload_to='uploads/posts', blank=True, null=True)
     time = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
@@ -27,14 +27,22 @@ class Post(models.Model):
             date=date(self.time),
         )
 
+    @property
+    def attachment_filename(self):
+        return self.attachment and os.path.basename(self.attachment.name)
+
 
 class Comment(models.Model):
     post = models.ForeignKey(Post)
     user = models.ForeignKey(User)
     body = models.TextField()
-    comment_file = models.FileField(upload_to='uploads/comments',
+    attachment = models.FileField(upload_to='uploads/comments',
                                     blank=True, null=True)
     time = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def attachment_filename(self):
+        return self.attachment and os.path.basename(self.attachment.name)
 
     class Meta:
         ordering = ('time',) 

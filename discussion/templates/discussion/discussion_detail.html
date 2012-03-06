@@ -13,9 +13,12 @@
         <div>
             <h3><a href="{{ post_detail }}">{{ post }}</a></h3>
             <p>{{ post.body }}</p>
+            {% if post.attachment %}
+                <a href="{{ post.attachment.url }}">{{ post.attachmentname }}</a>
+            {% endif %}
             <div>
                 {% for comment in post.comment_set.all %}
-                <p>{{ comment.body }}</p>
+                {% include 'discussion/_comment_detail.html' %}
                 {% endfor %}
             </div>
             <form action="{{ post_detail }}">

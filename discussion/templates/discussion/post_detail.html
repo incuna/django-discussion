@@ -2,11 +2,11 @@
 
 {% block content %}
     <h2>{{ post.name }}</h2>
+    {% if post.attachment %}
+        <a href="{{ post.attachment.url }}">{{ post.attachmentname }}</a>
+    {% endif %}
     {% for comment in post.comment_set.all %}
-        <p>{{ comment.body }}</p>
-        {% if comment.comment_file %}
-            <a href="{{ MEDIA_URL }}{{ comment.comment_file.name }}">Attached File</a>
-        {% endif %}
+        {% include 'discussion/_comment_detail.html' %}
     {% endfor %}
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
