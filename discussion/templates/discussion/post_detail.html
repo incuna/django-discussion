@@ -1,10 +1,7 @@
 {% extends "discussion/base.html" %}
 
 {% block content %}
-    <h2>{{ post.name }}</h2>
-    {% if post.attachment %}
-        <a href="{{ post.attachment.url }}">{{ post.attachmentname }}</a>
-    {% endif %}
+    {% include 'discussion/_post_detail.html' %}
     {% for comment in post.comment_set.all %}
         {% include 'discussion/_comment_detail.html' %}
     {% endfor %}
@@ -13,6 +10,5 @@
         {{ form }}
         <input type="submit" value="Submit">
     </form>
-
     <a href="{% url discussion slug=post.discussion.slug %}">Back to {{ post.discussion }}</a>
 {% endblock %}

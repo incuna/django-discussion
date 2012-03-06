@@ -11,11 +11,8 @@
     {% for post in object.post_set.all %}
         {% url 'discussion_post' pk=post.pk discussion_slug=object.slug as post_detail %}
         <div>
-            <h3><a href="{{ post_detail }}">{{ post }}</a></h3>
-            <p>{{ post.body }}</p>
-            {% if post.attachment %}
-                <a href="{{ post.attachment.url }}">{{ post.attachmentname }}</a>
-            {% endif %}
+            {% include 'discussion/_post_detail.html' %}
+            <a href="{{ post_detail }}" class="post-permalink">Full conversation</a>
             <div>
                 {% for comment in post.comment_set.all %}
                 {% include 'discussion/_comment_detail.html' %}
