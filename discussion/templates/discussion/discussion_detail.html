@@ -1,12 +1,11 @@
 {% extends "discussion/base.html" %}
-{% load url from future %}
+{% load discussiontags %}
 
 {% block content %}
 <h2>{{ object }}</h2>
 <div>
-    <form action="{% url 'discussion_add_post' discussion_slug=object.slug %}">
-        {{ form }}
-        <input type="submit" value="Add a post" />
+    <form action="{% url discussion_add_post discussion_slug=object.slug %}" method="POST" enctype="multipart/form-data">
+        {% include 'discussion/_post_form_fields.html' %}
     </form>
     {% for post in object.post_set.all %}
         {% url 'discussion_post' pk=post.pk discussion_slug=object.slug as post_detail %}
@@ -22,5 +21,6 @@
         </div>
     {% endfor %}
 </div>
+<a href="{% url discussion_index %}">All discussions</a>
 {% endblock %}
 

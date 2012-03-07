@@ -1,4 +1,5 @@
 {% extends "discussion/base.html" %}
+{% load discussiontags %}
 
 {% block content %}
     {% include 'discussion/_post_detail.html' %}
@@ -7,6 +8,6 @@
     {% endfor %}
     {% comment_form post %}
 
-    <a href="{% url discussion slug=post.discussion.slug %}">Back to {{ post.discussion }}</a>
+    <a href="{% url discussion slug=post.discussion.slug %}">{{ post.discussion }}</a>
 
 {% endblock %}
