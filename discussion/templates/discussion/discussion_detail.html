@@ -5,7 +5,7 @@
 <h2>{{ object }}</h2>
 <div>
     <form action="{% url 'discussion_add_post' discussion_slug=object.slug %}">
-        {{ post_form }}
+        {{ form }}
         <input type="submit" value="Add a post" />
     </form>
     {% for post in object.post_set.all %}
@@ -18,12 +18,7 @@
                 {% include 'discussion/_comment_detail.html' %}
                 {% endfor %}
             </div>
-            <form action="{{ post_detail }}">
-                <fieldset>
-                    {{ comment_form }}
-                </fieldset>
-                <input type="submit" value="Add a post" />
-            </form>
+            {% comment_form post %}
         </div>
     {% endfor %}
 </div>

@@ -1,11 +1,19 @@
 from django import template
+from discussion.forms import CommentForm
 
 register = template.Library()
 
 @register.inclusion_tag('discussion/limit_comments.html')
 def limit_comments(post, first=2, last=1, limit=None, comments=None):
     """
-    Simple tag to limit the comments being displayed.
+    Render a limited set of comments for a post.
+        first: The number of comments to display from the start of the list.
+        last: The number of comments to display from the end of the list.
+        limit: If there are less comments than this limit then display all comments.
+            This defaults to first + last.
+        comments: A list of comments to use (The default is the posts comments).
+
+    {% limit_comments post 3 2 %}
     """
     
     if limit is None:
@@ -31,5 +39,16 @@ def limit_comments(post, first=2, last=1, limit=None, comments=None):
         'last_comments': last_comments,
         'all_count': count,
         'hidden_count': hidden_count,
+    }
+
+
+@register.inclusion_tag('discussion/comment_form.html')
+def comment_form(post):
+    """
+    Render the comment form with the correct prefix.
+    """
+    return {
+        'post': post,
+        'form': CommentForm(prefix=post.prefix),
     }
 

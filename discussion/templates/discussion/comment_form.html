@@ -1,0 +1,5 @@
+<form class="comment-form" action="{% url discussion_post pk=post.pk discussion_slug=post.discussion.slug %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form>

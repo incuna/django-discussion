@@ -5,13 +5,7 @@
     {% for comment in post.comment_set.all %}
         {% include 'discussion/_comment_detail.html' %}
     {% endfor %}
-    <form action="" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <fieldset>
-            {% include 'discussion/_comment_form_fields.html' %}
-        </fieldset>
-        <input type="submit" value="Submit">
-    </form>
+    {% comment_form post %}
 
     <a href="{% url discussion slug=post.discussion.slug %}">Back to {{ post.discussion }}</a>
 

@@ -38,6 +38,10 @@ class Post(models.Model):
     def attachment_filename(self):
         return self.attachment and os.path.basename(self.attachment.name)
 
+    @property
+    def prefix(self):
+       return 'post-%d' % (self.pk or 0,)
+
 
 class Comment(models.Model):
     post = models.ForeignKey(Post)
