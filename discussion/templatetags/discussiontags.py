@@ -1,5 +1,8 @@
+import re
 from django import template
 from discussion.forms import CommentForm
+
+re_img = re.compile(r'\.(bmp|jpe?g|jp2|jxr|gif|png|tiff?)$', re.IGNORECASE)
 
 register = template.Library()
 
@@ -51,4 +54,12 @@ def comment_form(post):
         'post': post,
         'form': CommentForm(prefix=post.prefix),
     }
+
+
+@register.filter
+def is_image(value):
+    """
+    Is the file an image (based on it's extension)
+    """
+    return re_img.search(value.name)
 
