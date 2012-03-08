@@ -67,5 +67,5 @@ def is_image(value):
 
 @register.filter
 def highlight(text, word):
-    return mark_safe(text.replace(word, "<span class='highlight'>%s</span>" % word))
+    return mark_safe(re.compile('(?P<word>%s)' % re.escape(word), re.IGNORECASE).sub("<span class='highlight'>\g<word></span>", text))
 
