@@ -1,16 +1,12 @@
 {% extends "discussion/base.html" %}
 
 {% block content %}
+    <h2>Search</h2>
+    {% include 'discussion/_search_form.html' %}
+
     <ul>
         {% for obj in object_list %}
             <li><a href="{% url discussion slug=obj.slug %}">{{ obj }}</a></li>
         {% endfor %}
     </ul>
-
-    <h2>Global Search</h2>
-    <form action="{% url discussion_search %}" method="POST">
-        {% csrf_token %}
-        {{ search_form }}
-        <input type="submit" value="Submit">
-    </form>
 {% endblock %}

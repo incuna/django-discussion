@@ -1,6 +1,7 @@
 import re
 from django import template
 from discussion.forms import CommentForm
+from django.utils.safestring import mark_safe
 
 re_img = re.compile(r'\.(bmp|jpe?g|jp2|jxr|gif|png|tiff?)$', re.IGNORECASE)
 
@@ -62,4 +63,9 @@ def is_image(value):
     Is the file an image (based on it's extension)
     """
     return re_img.search(value.name)
+
+
+@register.filter
+def highlight(text, word):
+    return mark_safe(text.replace(word, "<span class='highlight'>%s</span>" % word))
 

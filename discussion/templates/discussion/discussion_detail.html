@@ -2,6 +2,10 @@
 {% load discussiontags %}
 
 {% block content %}
+
+<h2>Search</h2>
+{% include 'discussion/_search_form.html' %}
+
 <h2>{{ object }}</h2>
 <div>
     <form action="{% url discussion_add_post discussion_slug=object.slug %}" method="POST" enctype="multipart/form-data">

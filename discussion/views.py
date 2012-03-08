@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.views.generic import CreateView, DetailView, ListView, FormView
 from django.views.generic.list import BaseListView
+from django.db.models import Q
 
 from discussion.forms import CommentForm, PostForm, SearchForm
 from discussion.models import Discussion, Comment, Post
@@ -10,10 +11,38 @@ from discussion.utils import class_view_decorator
 
 class SearchFormMixin(object):
     """Add the basic search form to your view."""
+
+    search_initial = {}
+
     def get_context_data(self, **kwargs):
         context = super(SearchFormMixin, self).get_context_data(**kwargs)
-        context['search_form'] = SearchForm()
+        context['search_form'] = self.get_search_form(SearchForm)
         return context
+
+    def get_search_form(self, form_class):
+        """
+        Returns an instance of the search form to be used in this view.
+        """
+        return form_class(**self.get_search_form_kwargs())
+
+    def get_search_form_kwargs(self):
+        """
+        Returns the keyword arguments for instanciating the search form.
+        """
+        kwargs = {'initial': self.get_search_initial()}
+        if self.request.method in ('POST', 'PUT'):
+            kwargs.update({
+                'data': self.request.POST,
+                'files': self.request.FILES,
+            })
+
+        return kwargs
+
+    def get_search_initial(self):
+        """
+        Returns the initial data to use for search forms on this view.
+        """
+        return self.search_initial
 
 
 class DiscussionMixin(object):
@@ -39,10 +68,11 @@ class DiscussionList(SearchFormMixin, ListView):
 
 
 @class_view_decorator(login_required)
-class DiscussionView(DetailView):
+class DiscussionView(SearchFormMixin, DetailView):
     model = Discussion
 
     def get_context_data(self, **kwargs):
+        self.search_initial.update({'discussion': self.object})
         context = super(DiscussionView, self).get_context_data(**kwargs)
         context['form'] = PostForm()
         return context
@@ -119,21 +149,34 @@ class PostView(DiscussionMixin, CreateView):
 
 
 @class_view_decorator(login_required)
-class Search(SearchFormMixin, BaseListView, FormView):
+class Search(BaseListView, FormView):
     form_class = SearchForm
     model = Post
     template_name = 'discussion/search.html'
 
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data(form=form,
-                                        object_list=self.get_queryset()))
+                                                             object_list=self.get_queryset()))
 
     def form_valid(self, form):
         """
         Using the name field try to find any posts that match.
         """
-        object_list = self.model.objects.filter(name__icontains=form.cleaned_data['name'])
-        return self.render_to_response(self.get_context_data(object_list=object_list))
+        search_term = form.cleaned_data['search']
+        object_list = self.model.objects.filter(Q(body__icontains=search_term) |
+                                                Q(comment__body__icontains=search_term))
+        if form.cleaned_data.get('discussion', None) is not None:
+            object_list = object_list.filter(discussion=form.cleaned_data['discussion'])
+
+        return self.render_to_response(self.get_context_data(form=form,
+                                                             object_list=object_list.distinct(),
+                                                             search_term=search_term))
+
+    def get_context_data(self, **kwargs):
+        if 'form' in kwargs:
+            kwargs.update({'search_form': kwargs.pop('form')})
+
+        return super(Search, self).get_context_data(**kwargs)
 
     def get_queryset(self):
         """

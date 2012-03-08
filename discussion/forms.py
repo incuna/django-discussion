@@ -1,6 +1,6 @@
 from django import forms
 
-from discussion.models import Comment, Post
+from discussion.models import Comment, Post, Discussion
 
 
 class CommentForm(forms.ModelForm):
@@ -15,8 +15,10 @@ class PostForm(forms.ModelForm):
         model = Post
 
 
-class SearchForm(forms.ModelForm):
-    class Meta:
-        exclude = ('discussion', 'slug')
-        model = Post
+class SearchForm(forms.Form):
+    search = forms.CharField()
+    discussion = forms.ModelChoiceField(required=False, queryset=Discussion.objects, empty_label='All discussions')
+    #class Meta:
+    #    exclude = ('discussion', 'slug')
+    #    model = Post
 
