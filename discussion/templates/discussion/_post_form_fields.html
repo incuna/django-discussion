@@ -1,4 +1,15 @@
     {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Post">
-
+    <form action="" method="post" enctype="multipart/form-data" class="post-form">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="body-field">
+          {{ form.body }}
+          {{ form.body.errors }}
+        </div>
+        <div class="file-upload-field">
+          <label for="id_{{ form.attachment.html_name }}">Add a file:</label>
+          {{ form.attachment }}
+          {{ form.attachment.errors }}
+        </div>
+      <span class="button"><input type="submit" value="Post"></span>
+    </form>
