@@ -1,14 +1,14 @@
 {% extends "discussion/base.html" %}
 
-{% block content %}
+{% block forum_content %}
     <div class="forum-search">
         <h2>Search</h2>
-        <h5><strong>{{ object_list.all.count }}</strong> results</h5>
         {% include 'discussion/_search_form.html' %}
     </div>
-    <hr>
 
+    <div class="forum-search-results">
     {% if object_list %}
+        <h5><strong>{{ object_list.all.count }}</strong> results</h5>
         {% for post in object_list %}
             <article class="post">
                 {% include 'discussion/_post_detail.html' %}
@@ -23,4 +23,5 @@
     {% else %}
         <p>No results</p>
     {% endif %}
+    </div>
 {% endblock %}
