@@ -1,3 +1,10 @@
+body.discussion #forum-content .discussion-list li {
+  margin: 10px 0;
+  background: #eeeeee;
+  border: 1px solid #dddddd; }
+  body.discussion #forum-content .discussion-list li a {
+    display: block;
+    padding: 10px; }
 body.discussion #forum-content .forum-search {
   margin: 1em 0; }
 body.discussion #forum-content .post-form,
