@@ -15,7 +15,7 @@
         </form>
         {% for post in object.post_set.all %}
             <article class="post" id="post-{{ post.id }}">
-                {% url 'discussion_post' pk=post.pk discussion_slug=object.slug as post_detail %}
+                {% url discussion_post pk=post.pk discussion_slug=object.slug as post_detail %}
                 <div class="post-info">
                     {% include 'discussion/_post_detail.html' %}
                     <div class="comment-count">{{ post.comment_set.all.count|default:"No" }} repl{{ post.comment_set.all.count|pluralize:"y,ies" }}</div>
