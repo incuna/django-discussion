@@ -4,24 +4,21 @@ $(function() {
     // 
     function init(context) {
 
+      var allPostTextarea = $('.post-form textarea,', context);
+      var allCommentTextarea = $('.comment-form textarea,', context);
+
+      // Initialise post fields
       if ($.fn.autogrow) {
-        // Initialise post fields
-        $('.post-form textarea', context)
-          // Set the rows to 3 if we have JS, non js see a larger box.
-          .attr('rows', 3)
-          .autogrow()
-        // textarea enhancements
-        $('.comment-form', context)
-        .find('textarea')
-        .attr('rows', 3)
-        .autogrow()
+        // The class sets the height differently if we are using autogrow, otherwise uses a larger height
+        allPostTextarea.addClass('autogrow').autogrow()
+        allCommentTextarea.addClass('autogrow').autogrow()
       }
 
       if ($.fn.placeholder) {
         var defaultPost = 'Start a conversation';
         var defaultComment = 'Reply to this conversation';
-        $('.comment-form', context).find('textarea').attr('placeholder', defaultComment).placeholder();
-        $('.post-form textarea', context).attr('placeholder', defaultPost).placeholder();
+        defaultPost.attr('placeholder', defaultPost).placeholder();
+        allCommentTextarea.attr('placeholder', defaultComment).placeholder();
       }
 
       if ($.fn.ajaxSubmit) {
