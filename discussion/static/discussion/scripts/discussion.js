@@ -15,10 +15,8 @@ $(function() {
       }
 
       if ($.fn.placeholder) {
-        var defaultPost = 'Start a conversation';
-        var defaultComment = 'Reply to this conversation';
-        defaultPost.attr('placeholder', defaultPost).placeholder();
-        allCommentTextarea.attr('placeholder', defaultComment).placeholder();
+        defaultPost.placeholder();
+        allCommentTextarea.placeholder();
       }
 
       if ($.fn.ajaxSubmit) {
