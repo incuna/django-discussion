@@ -1,1 +1,9 @@
 {% extends "base.html" %}
+
+{% block bodyclass %}{{ block.super }} discussion{% endblock %}
+
+{% block content %}
+  <div id="forum-content">
+    {% block forum_content %}{% endblock %}
+  </div>
+{% endblock content %}
