@@ -6,7 +6,11 @@ body.discussion #forum-content .discussion-list li {
     display: block;
     padding: 10px; }
 body.discussion #forum-content .forum-search {
-  margin: 10px 0; }
+  margin: 10px 0;
+  overflow: hidden; }
+  body.discussion #forum-content .forum-search p {
+    float: left;
+    margin-right: 10px; }
 body.discussion #forum-content .forum-search-results {
   margin: 10px 0; }
   body.discussion #forum-content .forum-search-results .num-results {
