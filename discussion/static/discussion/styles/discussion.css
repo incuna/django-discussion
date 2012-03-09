@@ -48,7 +48,7 @@ body.discussion #forum-content .comment-form {
     body.discussion #forum-content .comment-form div.body-field textarea {
       left: 10px;
       right: 0px;
-      -mox-box-sizing: border-box;
+      -moz-box-sizing: border-box;
       -webkit-box-sizing: border-box;
       box-sizing: border-box;
       width: 100%;
