@@ -5,7 +5,7 @@ Provides a Facebook group style discussion forum.
 ## Installation
 
     * pip install django-discussion
-    * Requires three jQuery libraries
+    * Requires three jQuery libraries to use the default AJAX/javascript
         * jquery.autogrow.js 
           commit 8d632548aad3f07269adf03d4a47b7f2c3c7965c 
           https://github.com/jaz303/jquery-grab-bag/blob/master/javascripts/jquery.autogrow-textarea.js
