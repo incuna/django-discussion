@@ -1,5 +1,5 @@
 <form action="{% url discussion_search %}" method="POST" class="forum-search-form">
   {% csrf_token %}
-  {{ search_form }}
+  {{ search_form.as_p }}
   <span class="button"><input type="submit" value="search"></span>
 </form>
