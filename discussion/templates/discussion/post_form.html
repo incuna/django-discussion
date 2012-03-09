@@ -1,11 +1,10 @@
 {% extends "discussion/base.html" %}
 
-{% block content %}
-<h2>Add a Post</h2>
-<form action="{% url discussion_add_post discussion_slug=discussion.slug %}" method="POST" enctype="multipart/form-data">
-    {% include 'discussion/_post_form_fields.html' %}
-</form>
+{% block forum_content %}
+    <h2>Add a Post</h2>
+    <form action="{% url discussion_add_post discussion_slug=discussion.slug %}" method="POST" enctype="multipart/form-data">
+        {% include 'discussion/_post_form_fields.html' %}
+    </form>
 
-<a href="{% url discussion slug=discussion.slug %}">{{ discussion }}</a>
+    <a href="{% url discussion slug=discussion.slug %}">{{ discussion }}</a>
 {% endblock %}
-
