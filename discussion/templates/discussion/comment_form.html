@@ -1,5 +1,15 @@
 <form class="comment-form" action="{% url discussion_post pk=post.pk discussion_slug=post.discussion.slug %}" method="POST" enctype="multipart/form-data">
+    <h3>Add new comment:</h5>
     {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Comment">
+    {{ form.non_field_errors }}
+    <div class="body-field">
+      {{ form.body }}
+      {{ form.body.errors }}
+    </div>
+    <div class="file-upload-field">
+      <label for="id_{{ form.attachment.html_name }}">Add a file:</label>
+      {{ form.attachment }}
+      {{ form.attachment.errors }}
+    </div>
+    <span class="button"><input type="submit" value="Comment"></span>
 </form>
