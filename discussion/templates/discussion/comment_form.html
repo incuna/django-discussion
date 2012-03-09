@@ -1,5 +1,5 @@
 <form class="comment-form" action="{% url discussion_post pk=post.pk discussion_slug=post.discussion.slug %}" method="POST" enctype="multipart/form-data">
-    <h3>Add new comment:</h5>
+    <h3>Add new reply:</h5>
     {% csrf_token %}
     {{ form.non_field_errors }}
     <div class="body-field">
