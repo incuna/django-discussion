@@ -68,6 +68,17 @@ body.discussion #forum-content .comment-form {
   body.discussion #forum-content .comment-form .button {
     display: block;
     float: right; }
+  body.discussion #forum-content .post-form ul.errorlist li,
+  body.discussion #forum-content .comment-form ul.errorlist li {
+    margin: 10px 0;
+    background-color: #c8706f;
+    color: white;
+    padding: 2px 4px 3px;
+    font-weight: bold;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px; }
 body.discussion #forum-content .comment, body.discussion #forum-content .post {
   border: 1px solid #dddddd;
   margin: 10px 0;
