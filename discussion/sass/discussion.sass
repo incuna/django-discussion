@@ -41,24 +41,26 @@ body.discussion
         height: auto
         textarea
           left: 10px
-          right: 0px
           -moz-box-sizing: border-box
           -webkit-box-sizing: border-box
           box-sizing: border-box
           width: 100%
-          min-width: 100% !important //stops horizontal resizing
-          max-width: 100% !important
-          _width: 98% //IE <8 support where box-sizing not recognised
-          _min-width: 98% //right border won't line up exactly
-          _max-width: 98%
+          min-width: 100% //stops horizontal resizing. Breaks IE8 box-sizing: border-box
+          max-width: 100%
           height: 10em
           resize: none
           display: block
           padding: 5px
           overflow: auto //only relevant when autogrow is not on
           border: 1px solid #ccc
+          .lt-ie8 &
+            width: 98% //IE <8 support where box-sizing not recognised
+            min-width: 98% !important
+            max-width: 98% !important
           &.autogrow // Styles added by JS
-            height: 4em
+            height: 6em
+            .lt-ie8 &
+              height: 4em // not using box-sizing: border-box so ends up larger 
         label
           display: none
       div.file-upload-field
