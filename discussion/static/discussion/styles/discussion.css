@@ -1,0 +1,103 @@
+body.discussion #forum-content .forum-search {
+  margin: 1em 0; }
+body.discussion #forum-content .post-form,
+body.discussion #forum-content .comment-form {
+  margin: 10px 0;
+  padding-left: 10px;
+  position: relative;
+  overflow: hidden; }
+  body.discussion #forum-content .post-form h3,
+  body.discussion #forum-content .comment-form h3 {
+    font-weight: 700; }
+  body.discussion #forum-content .post-form div.body-field,
+  body.discussion #forum-content .post-form div.file-upload-field,
+  body.discussion #forum-content .post-form .button,
+  body.discussion #forum-content .comment-form div.body-field,
+  body.discussion #forum-content .comment-form div.file-upload-field,
+  body.discussion #forum-content .comment-form .button {
+    position: relative; }
+  body.discussion #forum-content .post-form div.body-field,
+  body.discussion #forum-content .comment-form div.body-field {
+    margin: 10px 0; }
+  body.discussion #forum-content .post-form div.file-upload-field,
+  body.discussion #forum-content .post-form .button,
+  body.discussion #forum-content .comment-form div.file-upload-field,
+  body.discussion #forum-content .comment-form .button {
+    margin: 0 0 10px; }
+  body.discussion #forum-content .post-form div.body-field,
+  body.discussion #forum-content .comment-form div.body-field {
+    height: auto; }
+    body.discussion #forum-content .post-form div.body-field textarea,
+    body.discussion #forum-content .comment-form div.body-field textarea {
+      left: 10px;
+      right: 0px;
+      -mox-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      width: 100%;
+      min-width: 100% !important;
+      max-width: 100% !important;
+      _width: 99%;
+      _min-width: 99%;
+      _max-width: 99%;
+      height: auto;
+      resize: none;
+      display: block;
+      overflow: auto;
+      border: 1px solid #cccccc;
+      padding: 0; }
+      body.discussion #forum-content .post-form div.body-field textarea.autogrow,
+      body.discussion #forum-content .comment-form div.body-field textarea.autogrow {
+        height: 4em; }
+    body.discussion #forum-content .post-form div.body-field label,
+    body.discussion #forum-content .comment-form div.body-field label {
+      display: none; }
+  body.discussion #forum-content .post-form div.file-upload-field,
+  body.discussion #forum-content .comment-form div.file-upload-field {
+    float: left;
+    margin-top: 0;
+    margin-left: 10px; }
+  body.discussion #forum-content .post-form .button,
+  body.discussion #forum-content .comment-form .button {
+    display: block;
+    float: right; }
+body.discussion #forum-content .comment, body.discussion #forum-content .post {
+  border: 1px solid #dddddd;
+  margin: 10px 0;
+  padding: 10px;
+  overflow: hidden; }
+  body.discussion #forum-content .comment .user-name, body.discussion #forum-content .post .user-name {
+    font-size: 90%;
+    font-weight: 700;
+    margin: 0;
+    padding: 0; }
+  body.discussion #forum-content .comment .post-date,
+  body.discussion #forum-content .comment .comment-date, body.discussion #forum-content .post .post-date, body.discussion #forum-content .post .comment-date {
+    font-size: 90%;
+    color: #999999; }
+  body.discussion #forum-content .comment .post-body, body.discussion #forum-content .post .post-body {
+    color: #252525;
+    background: #eeeeee;
+    padding: 1em;
+    margin: 1em 0; }
+  body.discussion #forum-content .comment .comment-count, body.discussion #forum-content .post .comment-count {
+    font-size: 90%;
+    font-style: italic;
+    color: #999999; }
+  body.discussion #forum-content .comment .post-links, body.discussion #forum-content .post .post-links {
+    margin: 1em 0; }
+    body.discussion #forum-content .comment .post-links .post-permalink, body.discussion #forum-content .post .post-links .post-permalink {
+      padding: 0 0 0 20px; }
+    body.discussion #forum-content .comment .post-links .post-reply, body.discussion #forum-content .comment .post-links .post-permalink, body.discussion #forum-content .post .post-links .post-reply, body.discussion #forum-content .post .post-links .post-permalink {
+      font-size: 90%;
+      text-decoration: none; }
+  body.discussion #forum-content .comment .post-attachment, body.discussion #forum-content .post .post-attachment {
+    margin: 0 0 10px 70px;
+    font-size: 11px;
+    font-weight: 700; }
+    body.discussion #forum-content .comment .post-attachment a, body.discussion #forum-content .post .post-attachment a {
+      text-decoration: none; }
+    body.discussion #forum-content .comment .post-attachment .errorlist, body.discussion #forum-content .post .post-attachment .errorlist {
+      margin: 10px 0 0 0; }
+body.discussion #forum-content .posts-wrapper .post {
+  margin: 1em 0; }
