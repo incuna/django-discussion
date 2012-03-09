@@ -1,0 +1,76 @@
+$(function() {
+    // Forum enhancements
+    // Requires jquery.form.js, jquery.autogrow.js and jquery.placeholder.js
+    // 
+    function init(context) {
+
+      if ($.fn.autogrow) {
+        // Initialise post fields
+        $('.post-form textarea', context)
+          // Set the rows to 3 if we have JS, non js see a larger box.
+          .attr('rows', 3)
+          .autogrow()
+        // textarea enhancements
+        $('.comment-form', context)
+        .find('textarea')
+        .attr('rows', 3)
+        .autogrow()
+      }
+
+      if ($.fn.placeholder) {
+        var defaultPost = 'Start a conversation';
+        var defaultComment = 'Reply to this conversation';
+        $('.comment-form', context).find('textarea').attr('placeholder', defaultComment).placeholder();
+        $('.post-form textarea', context).attr('placeholder', defaultPost).placeholder();
+      }
+
+      if ($.fn.ajaxSubmit) {
+        // initialise the comment forms
+        // Post comments via ajax
+        $('.comment-form', context).bind('submit', function(){
+            var form = $(this);
+            form.find('textarea').focus();
+            form.find(':submit').addClass('disabled').attr('disabled', true);
+            form.ajaxSubmit({
+              success: function(data, status_string, jqXHR) {
+                form.closest('.comment').before(data);
+                form.find(':input:not(:hidden,:submit)').val('').blur();
+                form.find('.errorlist').remove();
+                form.find(':submit').removeClass('disabled').attr('disabled', false);
+              },
+              error: function(jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status == 400) {
+                  var newForm = $(jqXHR.responseText);
+                  form.replaceWith(newForm);
+                  init(newForm.parent());
+                  newForm.find('textarea').focus();
+                }
+              }
+            });
+
+            return false;
+        })
+      }
+
+      // Scroll to the top of the textarea with a little bit of padding
+      // (that is a quarter of the viewport)
+      $('.post-reply', context).click(function() {
+        var reply = $($(this).attr('href'));
+        $('body').animate({scrollTop: reply.offset().top - $(window).height()/4 });
+        reply.find('textarea').focus()
+        return false;
+      });
+
+      // Load the hidden comments with ajax
+      $('.comment.show-hidden a', context).click(function() {
+        $(this).closest('.post-comments').load($(this).attr('href')+' .post-comments', '', function(responseText, textStatus, XMLHttpRequest) {
+            init($(this));
+            })
+        return false;
+      });
+
+    }
+
+    init();
+
+});
