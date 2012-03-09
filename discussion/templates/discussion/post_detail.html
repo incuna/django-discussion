@@ -6,20 +6,20 @@
 {% block forum_content %}
     <article class="post">
         {% include 'discussion/_post_detail.html' %}
-            {% with comments=post.comment_set.all comments_count=post.comment_set.all.count  %}
-                <div class="post-info">
-                    <span class="comment-count">{{ comments_count|default:"No" }} repl{{ comments_count|pluralize:"y,ies" }}</span>
-                    <a href="#reply" class="post-reply">Reply</a>
+        {% with comments=post.comment_set.all comments_count=post.comment_set.all.count  %}
+            <div class="post-info">
+                <span class="comment-count">{{ comments_count|default:"No" }} repl{{ comments_count|pluralize:"y,ies" }}</span>
+                <a href="#reply" class="post-reply">Reply</a>
+            </div>
+            <section class="post-comments">
+                {% for comment in comments %}
+                    {% include 'discussion/_comment_detail.html' %}
+                {% endfor %}
+                <div class="comment" id="reply">
+                    {% comment_form post %}
                 </div>
-                <section class="post-comments">
-                    {% for comment in comments %}
-                        {% include 'discussion/_comment_detail.html' %}
-                    {% endfor %}
-                    <div class="comment" id="reply">
-                        {% comment_form post %}
-                    </div>
-                </section>
-            {% endwith %}
+            </section>
+        {% endwith %}
     </article>
 
     <a href="{% url discussion slug=post.discussion.slug %}">{{ post.discussion }}</a>
