@@ -7,3 +7,15 @@
     {% block forum_content %}{% endblock %}
   </div>
 {% endblock content %}
+
+{% comment %}Uncomment the extra_style and extra_script blocks below to include the default JS and CSS on discussion pages. You might need to adjust the two block names to fit your template.{% endcomment %}
+
+{% comment %}
+{% block extra_style %}<link rel="stylesheet" href="{{ STATIC_URL }}discussion/styles/discussion.css">{% endblock extra_style %}
+{% block extra_script %}
+<script type="text/javascript" src="{{ STATIC_URL }}discussion/scripts/plugins/jquery.form.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}discussion/scripts/plugins/jquery.autogrow.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}discussion/scripts/plugins/jquery.placeholder.js"></script>
+<script src="{{ STATIC_URL }}discussion/scripts/discussion.js"></script>
+{% endblock extra_script %}
+{% endcomment %}
