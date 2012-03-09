@@ -28,7 +28,8 @@ $(function() {
             form.find(':submit').addClass('disabled').attr('disabled', true);
             form.ajaxSubmit({
               success: function(data, status_string, jqXHR) {
-                form.closest('.comment').before(data);
+                console.log(data);
+                form.closest('.comment-form-wrapper').before(data);
                 form.find(':input:not(:hidden,:submit)').val('').blur();
                 form.find('.errorlist').remove();
                 form.find(':submit').removeClass('disabled').attr('disabled', false);
