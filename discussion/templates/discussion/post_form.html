@@ -6,5 +6,5 @@
         {% include 'discussion/_post_form_fields.html' %}
     </form>
 
-    <a href="{% url discussion slug=discussion.slug %}">{{ discussion }}</a>
+    <a href="{% url discussion slug=discussion.slug %}" class="index-link">All posts in {{ discussion }}</a>
 {% endblock %}
