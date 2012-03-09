@@ -6,7 +6,11 @@
   </div>
 </header>
 <section class="post-body">
-  {{ post.body|urlize|linebreaks }}
+  {% if search_term %}
+      {{ post.body|urlize|linebreaks|highlight:search_term }}
+  {% else %}
+      {{ post.body|urlize|linebreaks }}
+  {% endif %}
 </section>
 {% if post.attachment %}
 <div class="post-attachment">
