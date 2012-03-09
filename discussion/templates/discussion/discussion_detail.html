@@ -30,7 +30,7 @@
                             {% include 'discussion/_comment_detail.html' %}
                         </div>
                     {% endfor %}
-                    <div class="new-comment-form" id="reply-{{ forloop.counter }}">
+                    <div class="comment-form-wrapper" id="reply-{{ forloop.counter }}">
                         {% comment_form post %}
                     </div>
                 </section>
