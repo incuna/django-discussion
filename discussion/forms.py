@@ -7,13 +7,18 @@ class CommentForm(forms.ModelForm):
     class Meta:
         exclude = ('user', 'post')
         model = Comment
+        widgets = {
+            'body' : forms.Textarea(attrs={'placeholder' : 'Reply to this conversation'}),
+        }
 
 
 class PostForm(forms.ModelForm):
     class Meta:
         exclude = ('user', 'discussion')
         model = Post
-
+        widgets = {
+            'body' : forms.Textarea(attrs={'placeholder' : 'Start a conversation'}),
+        }
 
 class SearchForm(forms.Form):
     search = forms.CharField()
@@ -21,4 +26,4 @@ class SearchForm(forms.Form):
     #class Meta:
     #    exclude = ('discussion', 'slug')
     #    model = Post
-
+    
