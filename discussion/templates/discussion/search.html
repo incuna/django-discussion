@@ -10,14 +10,14 @@
     {% if object_list %}
         <h5><strong>{{ object_list.all.count }}</strong> results</h5>
         {% for post in object_list %}
-            <article class="post">
-                {% include 'discussion/_post_detail.html' %}
-                {% with comments_count=post.comment_set.all.count  %}
+            <article class="post" id="post-{{ post.id }}">
                 <div class="post-info">
-                    <span class="comment-count">{{ comments_count|default:"No" }} repl{{ comments_count|pluralize:"y,ies" }}</span>
-                    <a href="{% url discussion_post discussion_slug=post.discussion.slug pk=post.pk %}" class="post-permalink">Full conversation</a>
+                    {% include 'discussion/_post_detail.html' %}
+                    <div class="comment-count">{{ post.comment_set.all.count|default:"No" }} repl{{ post.comment_set.all.count|pluralize:"y,ies" }}</div>
+                    <div class="post-links">
+                        <a href="{% url discussion_post discussion_slug=post.discussion.slug pk=post.pk %}" class="post-permalink">Full conversation</a>
+                    </div>
                 </div>
-                {% endwith %}
             </article>
         {% endfor %}
     {% else %}
