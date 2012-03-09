@@ -9,7 +9,7 @@ body.discussion
           display: block
           padding: 10px
     .forum-search
-      margin: 1em 0
+      margin: 10px 0
 
     .post-form, 
     .comment-form 
@@ -29,10 +29,8 @@ body.discussion
       .button
         margin: 0 0 10px
       div.body-field
-        //height: 11em
         height: auto
         textarea
-          //position: absolute
           left: 10px
           right: 0px
           -mox-box-sizing: border-box
@@ -44,7 +42,7 @@ body.discussion
           _width: 99% //IE <8 support where box-sizing not recognised
           _min-width: 99% //right border won't line up exactly
           _max-width: 99%
-          height: auto 
+          height: 10em
           resize: none
           display: block
           overflow: auto //only relevant when autogrow is not on
@@ -79,6 +77,8 @@ body.discussion
       padding: 10px
       overflow: hidden
 
+      .post-info
+        overflow: hidden
       .user-name
         font:
           size: 90%
@@ -94,17 +94,22 @@ body.discussion
       .post-body
         color: #252525
         background: #eee
-        padding: 1em
-        margin: 1em 0
+        padding: 10px
+        margin: 10px 0
 
       .comment-count
+        float: left
+        line-height: 1
+        margin-right: 20px
         font:   
           size: 90%
           style: italic
         color: #999
 
       .post-links
-        margin: 1em 0
+        float: left
+        line-height: 1
+        margin: 0 0 10px 0
         .post-reply, .post-permalink
           margin-right: 20px
           font:
@@ -112,16 +117,19 @@ body.discussion
           text-decoration: none
 
       .post-attachment
+        clear: both
         margin: 0 0 10px 70px
         font:
           size: 11px
           weight: 700
         a
           text-decoration: none
-
-        .errorlist
-          margin: 10px 0 0 0
+      h3.replies
+        margin-top: 10px
+        font-weight: 700
+      .post-comments
+        clear: both
 
     .posts-wrapper
       .post
-        margin: 1em 0
+        margin: 10px 0

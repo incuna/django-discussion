@@ -6,7 +6,7 @@ body.discussion #forum-content .discussion-list li {
     display: block;
     padding: 10px; }
 body.discussion #forum-content .forum-search {
-  margin: 1em 0; }
+  margin: 10px 0; }
 body.discussion #forum-content .post-form,
 body.discussion #forum-content .comment-form {
   margin: 10px 0;
@@ -47,7 +47,7 @@ body.discussion #forum-content .comment-form {
       _width: 99%;
       _min-width: 99%;
       _max-width: 99%;
-      height: auto;
+      height: 10em;
       resize: none;
       display: block;
       overflow: auto;
@@ -84,6 +84,8 @@ body.discussion #forum-content .comment, body.discussion #forum-content .post {
   margin: 10px 0;
   padding: 10px;
   overflow: hidden; }
+  body.discussion #forum-content .comment .post-info, body.discussion #forum-content .post .post-info {
+    overflow: hidden; }
   body.discussion #forum-content .comment .user-name, body.discussion #forum-content .post .user-name {
     font-size: 90%;
     font-weight: 700;
@@ -96,25 +98,34 @@ body.discussion #forum-content .comment, body.discussion #forum-content .post {
   body.discussion #forum-content .comment .post-body, body.discussion #forum-content .post .post-body {
     color: #252525;
     background: #eeeeee;
-    padding: 1em;
-    margin: 1em 0; }
+    padding: 10px;
+    margin: 10px 0; }
   body.discussion #forum-content .comment .comment-count, body.discussion #forum-content .post .comment-count {
+    float: left;
+    line-height: 1;
+    margin-right: 20px;
     font-size: 90%;
     font-style: italic;
     color: #999999; }
   body.discussion #forum-content .comment .post-links, body.discussion #forum-content .post .post-links {
-    margin: 1em 0; }
+    float: left;
+    line-height: 1;
+    margin: 0 0 10px 0; }
     body.discussion #forum-content .comment .post-links .post-reply, body.discussion #forum-content .comment .post-links .post-permalink, body.discussion #forum-content .post .post-links .post-reply, body.discussion #forum-content .post .post-links .post-permalink {
       margin-right: 20px;
       font-size: 90%;
       text-decoration: none; }
   body.discussion #forum-content .comment .post-attachment, body.discussion #forum-content .post .post-attachment {
+    clear: both;
     margin: 0 0 10px 70px;
     font-size: 11px;
     font-weight: 700; }
     body.discussion #forum-content .comment .post-attachment a, body.discussion #forum-content .post .post-attachment a {
       text-decoration: none; }
-    body.discussion #forum-content .comment .post-attachment .errorlist, body.discussion #forum-content .post .post-attachment .errorlist {
-      margin: 10px 0 0 0; }
+  body.discussion #forum-content .comment h3.replies, body.discussion #forum-content .post h3.replies {
+    margin-top: 10px;
+    font-weight: 700; }
+  body.discussion #forum-content .comment .post-comments, body.discussion #forum-content .post .post-comments {
+    clear: both; }
 body.discussion #forum-content .posts-wrapper .post {
-  margin: 1em 0; }
+  margin: 10px 0; }
