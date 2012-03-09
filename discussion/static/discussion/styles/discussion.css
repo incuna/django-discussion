@@ -93,9 +93,8 @@ body.discussion #forum-content .comment, body.discussion #forum-content .post {
     color: #999999; }
   body.discussion #forum-content .comment .post-links, body.discussion #forum-content .post .post-links {
     margin: 1em 0; }
-    body.discussion #forum-content .comment .post-links .post-permalink, body.discussion #forum-content .post .post-links .post-permalink {
-      padding: 0 0 0 20px; }
     body.discussion #forum-content .comment .post-links .post-reply, body.discussion #forum-content .comment .post-links .post-permalink, body.discussion #forum-content .post .post-links .post-reply, body.discussion #forum-content .post .post-links .post-permalink {
+      margin-right: 20px;
       font-size: 90%;
       text-decoration: none; }
   body.discussion #forum-content .comment .post-attachment, body.discussion #forum-content .post .post-attachment {
