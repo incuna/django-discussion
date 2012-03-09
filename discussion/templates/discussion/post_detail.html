@@ -12,6 +12,7 @@
                 <a href="#reply" class="post-reply">Reply</a>
             </div>
         </div>
+        <h3 class="replies">Replies:</h3>
         <section class="post-comments">
             {% for comment in post.comment_set.all %}
                 <div class="comment comment-list-{{ forloop.counter }}" id="comment-{{ comment.id }}">
