@@ -17,10 +17,11 @@ body.discussion #forum-content .forum-search-results {
     font-weight: 700; }
   body.discussion #forum-content .forum-search-results .post-body .highlight {
     background-color: #aaaaaa; }
+body.discussion #forum-content .comment-form {
+  padding-left: 10px; }
 body.discussion #forum-content .post-form,
 body.discussion #forum-content .comment-form {
   margin: 10px 0;
-  padding-left: 10px;
   position: relative;
   overflow: hidden; }
   body.discussion #forum-content .post-form h3,
