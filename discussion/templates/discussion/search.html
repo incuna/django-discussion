@@ -8,7 +8,7 @@
 
     <div class="forum-search-results">
     {% if object_list %}
-        <h5><strong>{{ object_list.all.count }}</strong> results</h5>
+        <h5><span class="num-results">{{ object_list.all.count }}</span> results</h5>
         {% for post in object_list %}
             <article class="post" id="post-{{ post.id }}">
                 <div class="post-info">
