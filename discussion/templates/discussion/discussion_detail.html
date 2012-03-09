@@ -1,30 +1,41 @@
 {% extends "discussion/base.html" %}
 {% load discussiontags %}
 
-{% block content %}
-
-<h2>Search</h2>
-{% include 'discussion/_search_form.html' %}
-
-<h2>{{ object }}</h2>
-<div>
-    <form action="{% url discussion_add_post discussion_slug=object.slug %}" method="POST" enctype="multipart/form-data">
-        {% include 'discussion/_post_form_fields.html' %}
-    </form>
-    {% for post in object.post_set.all %}
-        {% url 'discussion_post' pk=post.pk discussion_slug=object.slug as post_detail %}
-        <div>
-            {% include 'discussion/_post_detail.html' %}
-            <a href="{{ post_detail }}" class="post-permalink">Full conversation</a>
-            <div>
-                {% for comment in post.comment_set.all %}
-                {% include 'discussion/_comment_detail.html' %}
-                {% endfor %}
-            </div>
-            {% comment_form post %}
-        </div>
-    {% endfor %}
-</div>
-<a href="{% url discussion_index %}">All discussions</a>
+{% block forum_content %}
+    <div class="forum-search">
+        <h2>Search</h2>
+        {% include 'discussion/_search_form.html' %}
+    </div>
+    
+    <h2>{{ object }}</h2>
+    <div class="posts_wrapper">
+        <form action="{% url discussion_add_post discussion_slug=object.slug %}" method="POST" enctype="multipart/form-data" class="new-post-form">
+            <h3>Add new post:</h3>
+            {% include 'discussion/_post_form_fields.html' %}
+        </form>
+        {% for post in object.post_set.all %}
+            <article class="post">
+                {% url 'discussion_post' pk=post.pk discussion_slug=object.slug as post_detail %}
+                    <div class="post-info">
+                        {% include 'discussion/_post_detail.html' %}
+                        <div class="comment-count">{{ post.comment_set.all.count|default:"No" }} repl{{ post.comment_set.all.count|pluralize:"y,ies" }}</div>
+                        <div class="post-links">
+                            <a href="#reply-{{ forloop.counter }}" class="post-reply">Reply</a>
+                            <a href="{{ post_detail }}" class="post-permalink">Full conversation</a>
+                        </div>
+                    </div>
+                    <section class="post-comments">
+                        {% for comment in post.comment_set.all %}
+                            <div class="comment" id="comment-{{ forloop.counter }}">
+                                {% include 'discussion/_comment_detail.html' %}
+                            </div>
+                        {% endfor %}
+                        <div class="new-comment-form" id="reply-{{ forloop.counter }}">
+                            {% comment_form post %}
+                        </div>
+                    </section>
+            </article>
+        {% endfor %}
+    </div>
+    <a href="{% url discussion_index %}">All discussions</a>
 {% endblock %}
-
