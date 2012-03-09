@@ -1,4 +1,10 @@
-<h5>{{ comment.user.get_full_name }}</h5>
-<p>{{ comment.body }}</p>
-{% if comment.attachment %}<a href="{{ comment.attachment.url }}">{{ comment.attachment_filename }}</a>{% endif %}
-
+<div class="comment-content">
+    <h5 class="user-name">{{ comment.user.get_full_name }}</h5>
+    <p class="comment-body">{{ comment.body|urlize|linebreaksbr }}</p>
+    <time datetime="{{ comment.time }}" class="comment-date">{{ comment.time|timesince }} ago</time>
+    {% if comment.attachment %}
+        <div class="comment-attachment">
+            <a class="attachment-file" href="{{ comment.attachment.url }}">{{ comment.attachment_filename }}</a>
+        </div>
+    {% endif %}    
+</div>
