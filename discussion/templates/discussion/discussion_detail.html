@@ -28,9 +28,7 @@
                     {% if post.comment_set.all.count > 0 %}
                         <h3 class="replies">Replies:</h3>
                         {% for comment in post.comment_set.all %}
-                            <div class="comment comment-list-{{ forloop.counter }}" id="comment-{{ comment.id }}">
-                                {% include 'discussion/_comment_detail.html' %}
-                            </div>
+                            {% include 'discussion/_comment_detail.html' %}
                         {% endfor %}
                     {% endif %}
                     <div class="comment-form-wrapper" id="reply-{{ forloop.counter }}">
