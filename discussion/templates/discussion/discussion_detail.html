@@ -9,7 +9,7 @@
     
     <h2>{{ object }}</h2>
     <div class="posts_wrapper">
-        <form action="{% url discussion_add_post discussion_slug=object.slug %}" method="POST" enctype="multipart/form-data" class="new-post-form">
+        <form action="{% url discussion_add_post discussion_slug=object.slug %}" method="POST" enctype="multipart/form-data" class="post-form">
             <h3>Add new post:</h3>
             {% include 'discussion/_post_form_fields.html' %}
         </form>
