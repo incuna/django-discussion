@@ -15,7 +15,7 @@ $(function() {
       }
 
       if ($.fn.placeholder) {
-        defaultPost.placeholder();
+        allPostTextarea.placeholder();
         allCommentTextarea.placeholder();
       }
 
