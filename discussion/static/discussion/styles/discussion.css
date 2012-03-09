@@ -60,11 +60,15 @@ body.discussion #forum-content .comment-form {
       padding: 5px;
       overflow: auto;
       border: 1px solid #cccccc; }
+      .lt-ie9 body.discussion #forum-content .post-form div.body-field textarea, .lt-ie9
+      body.discussion #forum-content .comment-form div.body-field textarea {
+        min-width: auto;
+        max-width: auto; }
       .lt-ie8 body.discussion #forum-content .post-form div.body-field textarea, .lt-ie8
       body.discussion #forum-content .comment-form div.body-field textarea {
         width: 98%;
-        min-width: 98% !important;
-        max-width: 98% !important; }
+        min-width: 98%;
+        max-width: 98%; }
       body.discussion #forum-content .post-form div.body-field textarea.autogrow,
       body.discussion #forum-content .comment-form div.body-field textarea.autogrow {
         height: 6em; }

@@ -54,10 +54,13 @@ body.discussion
           padding: 5px
           overflow: auto //only relevant when autogrow is not on
           border: 1px solid #ccc
+          .lt-ie9 &
+            min-width: auto
+            max-width: auto
           .lt-ie8 &
             width: 98% //IE <8 support where box-sizing not recognised
-            min-width: 98% !important
-            max-width: 98% !important
+            min-width: 98%
+            max-width: 98%
           &.autogrow // Styles added by JS
             height: 6em
             .lt-ie8 &
