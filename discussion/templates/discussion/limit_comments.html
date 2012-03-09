@@ -1,10 +1,15 @@
 {% for comment in first_comments %}
-    {% include 'discussion/_comment_detail.html' %}
+    <div class="comment comment-list-{{ forloop.counter }}" id="comment-{{ comment.id }}">
+        {% include 'discussion/_comment_detail.html' %}
+    </div>
 {% endfor %}
 {% if hidden_count %}
-<div class="comment show-hidden"><a href="{% url discussion_post pk=post.pk discussion_slug=post.discussion.slug %}">Show {{ hidden_count }} hidden repl{{ hidden_count|pluralize:"y,ies"}}</a></div>
+    <div class="comment show-hidden">
+        <a href="{% url discussion_post pk=post.pk discussion_slug=post.discussion.slug %}">Show {{ hidden_count }} hidden repl{{ hidden_count|pluralize:"y,ies"}}</a>
+    </div>
 {% endif %}
 {% for comment in last_comments %}
-    {% include 'discussion/_comment_detail.html' %}
+    <div class="comment comment-list-{{ forloop.counter }}" id="comment-{{ comment.id }}">
+        {% include 'discussion/_comment_detail.html' %}
+    </div>
 {% endfor %}
-

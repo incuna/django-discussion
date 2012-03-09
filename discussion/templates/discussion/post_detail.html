@@ -14,7 +14,7 @@
         </div>
         <section class="post-comments">
             {% for comment in post.comment_set.all %}
-                <div class="comment" id="comment-{{ forloop.counter }}">
+                <div class="comment comment-list-{{ forloop.counter }}" id="comment-{{ comment.id }}">
                     {% include 'discussion/_comment_detail.html' %}
                 </div>
             {% endfor %}
