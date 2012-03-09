@@ -1,0 +1,109 @@
+body.discussion
+  #forum-content
+    .forum-search
+      margin: 1em 0
+
+    .post-form, 
+    .comment-form 
+      margin: 10px 0
+      padding-left: 10px
+      position: relative
+      overflow: hidden
+      h3
+        font-weight: 700
+      div.body-field,
+      div.file-upload-field,
+      .button
+        position: relative
+      div.body-field
+        margin: 10px 0
+      div.file-upload-field,
+      .button
+        margin: 0 0 10px
+      div.body-field
+        //height: 11em
+        height: auto
+        textarea
+          //position: absolute
+          left: 10px
+          right: 0px
+          -mox-box-sizing: border-box
+          -webkit-box-sizing: border-box
+          box-sizing: border-box
+          width: 100%
+          min-width: 100% !important //stops horizontal resizing
+          max-width: 100% !important
+          _width: 99% //IE <8 support where box-sizing not recognised
+          _min-width: 99% //right border won't line up exactly
+          _max-width: 99%
+          height: auto 
+          resize: none
+          display: block
+          overflow: auto //only relevant when autogrow is not on
+          border: 1px solid #ccc
+          padding: 0
+          &.autogrow // Styles added by JS
+            height: 4em
+        label
+          display: none
+      div.file-upload-field
+        float: left
+        margin-top: 0
+        margin-left: 10px
+      .button
+        display: block
+        float: right
+
+    .comment, .post
+      border: 1px solid #ddd
+      margin: 10px 0
+      padding: 10px
+      overflow: hidden
+
+      .user-name
+        font:
+          size: 90%
+          weight: 700
+        margin: 0
+        padding: 0
+      .post-date,
+      .comment-date
+        font:
+          size: 90%
+        color: #999
+
+      .post-body
+        color: #252525
+        background: #eee
+        padding: 1em
+        margin: 1em 0
+
+      .comment-count
+        font:   
+          size: 90%
+          style: italic
+        color: #999
+
+      .post-links
+        margin: 1em 0
+        .post-permalink
+          padding: 0 0 0 20px
+        .post-reply, .post-permalink
+          font:
+            size: 90%
+          text-decoration: none
+
+      .post-attachment
+        margin: 0 0 10px 70px
+        font:
+          size: 11px
+          weight: 700
+        a
+          text-decoration: none
+
+        .errorlist
+          margin: 10px 0 0 0
+
+    .posts-wrapper
+      .post
+        margin: 1em 0
