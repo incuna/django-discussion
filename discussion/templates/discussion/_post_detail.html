@@ -1,4 +1,15 @@
-<h5 class="user-name">{{ post.user.get_full_name }}</h5>
-<time pubdate="{{ post.time }}" class="post-date">{{ post.time|date:"d/m/Y" }}</time>
-<p class="post-body">{{ post.body|urlize }}</p>
-{% if post.attachment %}<a class="post-attachment" href="{{ post.attachment.url }}">{{ post.attachment_filename }}</a>{% endif %}
+{% load discussiontags %}
+<header class="post-header">
+  <div class="post-author">
+    <h5 class="user-name">{{ post.user.get_full_name }}</h5>
+    <time pubdate="{{ post.time }}" class="post-date">{{ post.time|date:"d/m/Y" }}</time>
+  </div>
+</header>
+<section class="post-body">
+  {{ post.body|urlize|linebreaks }}
+</section>
+{% if post.attachment %}
+<div class="post-attachment">
+    <a class="attachment-file" href="{{ post.attachment.url }}">{{ post.attachment_filename }}</a>
+</div>
+{% endif %}
