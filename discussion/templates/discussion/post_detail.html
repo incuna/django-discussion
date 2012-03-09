@@ -24,6 +24,6 @@
         </section>
     </article>
 
-    <a href="{% url discussion slug=post.discussion.slug %}">{{ post.discussion }}</a>
+    <a href="{% url discussion slug=post.discussion.slug %}" class="index-link">All posts in {{ post.discussion }}</a>
 {% endblock %}
 
