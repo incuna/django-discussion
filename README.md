@@ -16,3 +16,4 @@ Provides a Facebook group style discussion forum.
           v3.01 
           https://github.com/malsup/form/
     * Example CSS and script references are commented out in the base template
+    * Example CSS is compiled from SASS, so make any changes in the SASS and re-compile the CSS file.
