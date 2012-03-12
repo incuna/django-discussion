@@ -1,7 +1,5 @@
 {% for comment in first_comments %}
-    <div class="comment comment-list-{{ forloop.counter }}" id="comment-{{ comment.id }}">
-        {% include 'discussion/_comment_detail.html' %}
-    </div>
+    {% include 'discussion/_comment_detail.html' %}
 {% endfor %}
 {% if hidden_count %}
     <div class="comment show-hidden">
@@ -9,7 +7,5 @@
     </div>
 {% endif %}
 {% for comment in last_comments %}
-    <div class="comment comment-list-{{ forloop.counter }}" id="comment-{{ comment.id }}">
-        {% include 'discussion/_comment_detail.html' %}
-    </div>
+    {% include 'discussion/_comment_detail.html' %}
 {% endfor %}
