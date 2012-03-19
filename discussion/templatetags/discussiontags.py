@@ -7,8 +7,8 @@ re_img = re.compile(r'\.(bmp|jpe?g|jp2|jxr|gif|png|tiff?)$', re.IGNORECASE)
 
 register = template.Library()
 
-@register.inclusion_tag('discussion/limit_comments.html')
-def limit_comments(post, first=2, last=1, limit=None, comments=None):
+@register.inclusion_tag('discussion/limit_comments.html', takes_context=True)
+def limit_comments(context, post, first=2, last=1, limit=None, comments=None):
     """
     Render a limited set of comments for a post.
         first: The number of comments to display from the start of the list.
@@ -36,14 +36,16 @@ def limit_comments(post, first=2, last=1, limit=None, comments=None):
         last_comments = None
         hidden_count = 0
 
-    return {
+    context.update({
         'post': post,
         'all_comments': comments,
         'first_comments': first_comments,
         'last_comments': last_comments,
         'all_count': count,
         'hidden_count': hidden_count,
-    }
+    })
+
+    return context
 
 
 @register.inclusion_tag('discussion/comment_form.html')
