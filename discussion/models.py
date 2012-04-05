@@ -8,6 +8,8 @@ class Discussion(models.Model):
     user = models.ForeignKey(User)
     name = models.CharField(max_length=255)
     slug = models.SlugField()
+    image = models.ImageField(upload_to='images/discussions', max_length=255, blank=True, null=True)
+    description = models.TextField(default='', blank=True, null=True)
 
     def __unicode__(self):
         return self.name
