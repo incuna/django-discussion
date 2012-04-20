@@ -27,6 +27,9 @@ class Post(models.Model):
     attachment = models.FileField(upload_to='uploads/posts', blank=True, null=True)
     time = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ('-time',)
+
     def __unicode__(self):
         return 'Post by {user} at {time} on {date}'.format(
             user=self.user,
