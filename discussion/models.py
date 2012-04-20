@@ -1,4 +1,5 @@
-import os 
+import os
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import date, time
@@ -17,6 +18,7 @@ class Discussion(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return ('discussion', [self.slug])
+
 
 class Post(models.Model):
     discussion = models.ForeignKey(Discussion)
@@ -42,7 +44,7 @@ class Post(models.Model):
 
     @property
     def prefix(self):
-       return 'post-%d' % (self.pk or 0,)
+        return 'post-%d' % (self.pk or 0,)
 
 
 class Comment(models.Model):
@@ -58,7 +60,7 @@ class Comment(models.Model):
         return self.attachment and os.path.basename(self.attachment.name)
 
     class Meta:
-        ordering = ('time',) 
+        ordering = ('time',)
 
     def __unicode__(self):
         return 'Comment by {user} at {time} on {date}'.format(
