@@ -3,9 +3,9 @@ from discussion.models import Comment, Discussion, Post
 
 
 class CommentInline(admin.TabularInline):
-    exclude = ('user',)
     extra = 1
     model = Comment
+    raw_id_fields = ('user',)
 
 
 class PostAdmin(admin.ModelAdmin):
