@@ -1,0 +1,1 @@
+{{ object.discussion.name }} post by {{ object.user.get_full_name }} at {{ object.time|time }} on {{ object.time|date }}

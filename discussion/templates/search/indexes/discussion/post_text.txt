@@ -1,0 +1,9 @@
+{{ object.time }}
+{{ object.user.get_full_name }}
+{{ object.body }}
+
+{% for comment in object.comment_set.all %}
+    {{ comment.time }}
+    {{ comment.user.get_full_name }}
+    {{ comment.body }}
+{% endfor %}
