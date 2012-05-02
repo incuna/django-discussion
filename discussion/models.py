@@ -4,8 +4,9 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import date, time
 
+from orderable.models import Orderable
 
-class Discussion(models.Model):
+class Discussion(Orderable):
     user = models.ForeignKey(User)
     name = models.CharField(max_length=255)
     slug = models.SlugField()
