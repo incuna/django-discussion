@@ -1,13 +1,22 @@
 from django.contrib.auth.decorators import login_required
+from django.core import signals
 from django.core.urlresolvers import reverse
 from django.views.generic import CreateView, DetailView, ListView, FormView
 from django.views.generic.list import BaseListView
 from django.db.models import Q
 
-from discussion.forms import CommentForm, PostForm, SearchForm
+from discussion.forms import CommentForm, PostForm, SearchForm, SubscribeForm
 from discussion.models import Discussion, Comment, Post
 from discussion.utils import class_view_decorator
 
+from notification import models as notification
+def create_notice_types(app, created_models, verbosity, **kwargs):
+    notification.create_notice_type('discussion_post_save', _('Post Added'),
+                                    _('A new post has been added.'))
+    notification.create_notice_type('discussion_comment_save', _('Comment Added'),
+                                    _('A new comment has been added.'))
+
+signals.post_syncdb.connect(create_notice_types, sender=notification)
 
 class SearchFormMixin(object):
     """Add the basic search form to your view."""
@@ -74,7 +83,7 @@ class DiscussionView(SearchFormMixin, DetailView):
     def get_context_data(self, **kwargs):
         self.search_initial.update({'discussion': self.object})
         context = super(DiscussionView, self).get_context_data(**kwargs)
-        context['form'] = PostForm()
+        context.updat({'form': PostForm(), 'subscribe_form': SubscribeForm()})
         return context
 
 

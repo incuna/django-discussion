@@ -26,4 +26,7 @@ class SearchForm(forms.Form):
     #class Meta:
     #    exclude = ('discussion', 'slug')
     #    model = Post
-    
+
+class SubscribeForm(forms.Form):
+    subscribe = forms.CheckBoxInput()
+

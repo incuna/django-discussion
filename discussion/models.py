@@ -4,6 +4,11 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import date, time
 
+try:
+    from notification import models as notification
+except ImportError:
+    notification = None
+
 
 class Discussion(models.Model):
     user = models.ForeignKey(User)
@@ -71,3 +76,11 @@ class Comment(models.Model):
             time=time(self.time),
             date=date(self.time),
         )
+
+def comment_notifications(sender, created, **kwargs):
+    from django.contrib.auth.models import User
+    user = User.objects.get(pk=1)
+    if notification and created:
+        notification.send([user], 'discussion_comment_save', {'user': ''})
+models.signals.post_save.connect(comment_notifications, sender=Comment)
+
