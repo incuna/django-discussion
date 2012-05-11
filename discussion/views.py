@@ -9,14 +9,16 @@ from discussion.forms import CommentForm, PostForm, SearchForm, SubscribeForm
 from discussion.models import Discussion, Comment, Post
 from discussion.utils import class_view_decorator
 
-from notification import models as notification
-def create_notice_types(app, created_models, verbosity, **kwargs):
-    notification.create_notice_type('discussion_post_save', _('Post Added'),
-                                    _('A new post has been added.'))
-    notification.create_notice_type('discussion_comment_save', _('Comment Added'),
-                                    _('A new comment has been added.'))
+from notification.models import get_notification_setting, NoticeMediaListChoices, NoticeSetting
 
-signals.post_syncdb.connect(create_notice_types, sender=notification)
+#from notification import models as notification
+#def create_notice_types(app, created_models, verbosity, **kwargs):
+#    notification.create_notice_type('discussion_post_save', _('Post Added'),
+#                                    _('A new post has been added.'))
+#    notification.create_notice_type('discussion_comment_save', _('Comment Added'),
+#                                    _('A new comment has been added.'))
+#
+#signals.post_syncdb.connect(create_notice_types, sender=notification)
 
 class SearchFormMixin(object):
     """Add the basic search form to your view."""
@@ -80,10 +82,25 @@ class DiscussionList(SearchFormMixin, ListView):
 class DiscussionView(SearchFormMixin, DetailView):
     model = Discussion
 
+    def get_notice_settings(self):
+        result = NoticeSetting.objects.filter(user=self.request.user, notice_type__label=self.object.notification_label)
+        if not result:
+            result = []
+            notice_type = self.object.notice_type
+            for id, medium in NoticeMediaListChoices():
+                # creates default ones
+                #TODO fix
+                get_notification_setting(user=self.request.user, notice_type=notice_type, medium=unicode(medium).lower())
+        return NoticeSetting.objects.filter(user=self.request.user, notice_type__label=self.object.notification_label)
+
+    def get_notice_settings_initial(self):
+        return self.get_notice_settings().filter(send=True)
+
     def get_context_data(self, **kwargs):
         self.search_initial.update({'discussion': self.object})
         context = super(DiscussionView, self).get_context_data(**kwargs)
-        context.updat({'form': PostForm(), 'subscribe_form': SubscribeForm()})
+        initial={'send':[ ns.pk for ns in self.get_notice_settings_initial()]}
+        context.update({'form': PostForm(), 'subscribe_form': SubscribeForm(qs=self.get_notice_settings(), initial=initial)})
         return context
 
 

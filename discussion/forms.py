@@ -1,7 +1,7 @@
 from django import forms
 
 from discussion.models import Comment, Post, Discussion
-
+from notification.models import NoticeSetting
 
 class CommentForm(forms.ModelForm):
     class Meta:
@@ -27,6 +27,16 @@ class SearchForm(forms.Form):
     #    exclude = ('discussion', 'slug')
     #    model = Post
 
+
 class SubscribeForm(forms.Form):
-    subscribe = forms.CheckBoxInput()
+    send = forms.ModelMultipleChoiceField(NoticeSetting.objects, required=False,
+                                                   label=u'',
+                                                   widget=forms.CheckboxSelectMultiple, )
+
+    def __init__(self, *args, **kwargs):
+        qs = kwargs.pop('qs')
+        super(SubscribeForm, self).__init__(*args, **kwargs)
+        self.fields['send'].queryset = qs
+
+
 

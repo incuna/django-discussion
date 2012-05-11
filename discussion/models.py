@@ -3,11 +3,11 @@ import os
 from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import date, time
+from django.db.models.signals import post_save, pre_delete
+from django.dispatch import receiver
 
-try:
-    from notification import models as notification
-except ImportError:
-    notification = None
+
+from notification import models as notification
 
 
 class Discussion(models.Model):
@@ -23,6 +23,36 @@ class Discussion(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return ('discussion', [self.slug])
+
+    @property
+    def notification_label(self):
+        return "discussion_remind_%s" % self.slug
+
+    @property
+    def notification_display(self):
+        return ("Reminder for %s." % self.name)[:50]
+
+    @property
+    def notice_type(self):
+        """
+            Return the notice type for this discussion.
+            If it does not exist then the notice type will be created.
+        """
+        self.create_notice_type()
+        return notification.NoticeType.objects.get(label=self.notification_label)
+
+    def create_notice_type(self):
+        """Create (or update) a notice type for discussion instance ."""
+        notification.create_notice_type(self.notification_label, self.notification_display, "A new post has been added .", default=0)
+
+@receiver(post_save, sender=Discussion)
+def create_discussion_notice_type(sender, instance, **kwargs):
+    # If display or diary title has changed notification details will be updated or created for new diary.
+    instance.create_notice_type()
+
+@receiver(pre_delete, sender=Discussion)
+def delete_discussion_notice_type(sender, instance, **kwargs):
+    instance.notice_type.delete()
 
 
 class Post(models.Model):
