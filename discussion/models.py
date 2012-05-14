@@ -55,6 +55,15 @@ def delete_discussion_notice_type(sender, instance, **kwargs):
     instance.notice_type.delete()
 
 
+def notify_discussion_subscribers(discussion, instance):
+    """
+        Notifies all users who have their notification settings set to True for given discussion
+        instance parameter here is either Post or Comment 
+    """
+    notification_label = discussion.notification_label
+    users = User.objects.filter(noticesetting__send=True, noticesetting__notice_type__label=notification_label).exclude(id=instance.user.id).distinct()
+    notification.send(users, notification_label, {'discussion': discussion })
+    
 class Post(models.Model):
     discussion = models.ForeignKey(Discussion)
     user = models.ForeignKey(User)
@@ -84,6 +93,10 @@ class Post(models.Model):
     def prefix(self):
         return 'post-%d' % (self.pk or 0,)
 
+def post_notifications(sender, instance, created, **kwargs):
+    if created:
+        notify_discussion_subscribers(instance.discussion, instance)
+models.signals.post_save.connect(post_notifications, sender=Post)
 
 class Comment(models.Model):
     post = models.ForeignKey(Post)
@@ -107,10 +120,8 @@ class Comment(models.Model):
             date=date(self.time),
         )
 
-def comment_notifications(sender, created, **kwargs):
-    from django.contrib.auth.models import User
-    user = User.objects.get(pk=1)
-    if notification and created:
-        notification.send([user], 'discussion_comment_save', {'user': ''})
+def comment_notifications(sender, instance, created, **kwargs):
+    if created:
+        notify_discussion_subscribers(instance.post.discussion, instance)
 models.signals.post_save.connect(comment_notifications, sender=Comment)
 

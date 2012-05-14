@@ -9,16 +9,8 @@ from discussion.forms import CommentForm, PostForm, SearchForm, SubscribeForm
 from discussion.models import Discussion, Comment, Post
 from discussion.utils import class_view_decorator
 
-from notification.models import get_notification_setting, NoticeMediaListChoices, NoticeSetting
+from notification.models import get_all_notification_settings
 
-#from notification import models as notification
-#def create_notice_types(app, created_models, verbosity, **kwargs):
-#    notification.create_notice_type('discussion_post_save', _('Post Added'),
-#                                    _('A new post has been added.'))
-#    notification.create_notice_type('discussion_comment_save', _('Comment Added'),
-#                                    _('A new comment has been added.'))
-#
-#signals.post_syncdb.connect(create_notice_types, sender=notification)
 
 class SearchFormMixin(object):
     """Add the basic search form to your view."""
@@ -83,15 +75,7 @@ class DiscussionView(SearchFormMixin, DetailView):
     model = Discussion
 
     def get_notice_settings(self):
-        result = NoticeSetting.objects.filter(user=self.request.user, notice_type__label=self.object.notification_label)
-        if not result:
-            result = []
-            notice_type = self.object.notice_type
-            for id, medium in NoticeMediaListChoices():
-                # creates default ones
-                #TODO fix
-                get_notification_setting(user=self.request.user, notice_type=notice_type, medium=unicode(medium).lower())
-        return NoticeSetting.objects.filter(user=self.request.user, notice_type__label=self.object.notification_label)
+        return get_notification_settings(self.request.user, self.object.notification_label)
 
     def get_notice_settings_initial(self):
         return self.get_notice_settings().filter(send=True)
@@ -102,6 +86,15 @@ class DiscussionView(SearchFormMixin, DetailView):
         initial={'send':[ ns.pk for ns in self.get_notice_settings_initial()]}
         context.update({'form': PostForm(), 'subscribe_form': SubscribeForm(qs=self.get_notice_settings(), initial=initial)})
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if 'subscribtion_update' in request.POST.keys():
+            notice_settings = self.get_notice_settings()
+            notice_settings.filter(id__in=request.POST.get('send', [])).update(send=True)
+            notice_settings.exclude(id__in=request.POST.get('send', [])).update(send=False)
+        context = self.get_context_data(object=self.object)
+        return self.render_to_response(context)
 
 
 @class_view_decorator(login_required)

@@ -32,6 +32,7 @@ class SubscribeForm(forms.Form):
     send = forms.ModelMultipleChoiceField(NoticeSetting.objects, required=False,
                                                    label=u'',
                                                    widget=forms.CheckboxSelectMultiple, )
+    subscribtion_update = forms.CharField(label='', widget=forms.HiddenInput)
 
     def __init__(self, *args, **kwargs):
         qs = kwargs.pop('qs')
