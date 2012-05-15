@@ -50,26 +50,6 @@ class Discussion(Orderable):
                 slug=self._meta.app_label,
                 default=0)
 
-@receiver(post_save, sender=Discussion)
-def create_discussion_notice_type(sender, instance, **kwargs):
-    # If display or diary title has changed notification details will be updated or created for new diary.
-    instance.create_notice_type()
-
-@receiver(pre_delete, sender=Discussion)
-def delete_discussion_notice_type(sender, instance, **kwargs):
-    instance.notice_type.delete()
-
-
-def notify_discussion_subscribers(discussion, instance):
-    """
-        Notifies all users who have their notification settings set to True for given discussion
-        instance parameter here is either Post or Comment
-    """
-    notification_label = discussion.notification_label
-    users = User.objects.filter(
-            noticesetting__send=True, 
-            noticesetting__notice_type__label=notification_label).exclude(id=instance.user.id).distinct()
-    send(users, notification_label, {'discussion': discussion }, now=True)
 
 class Post(models.Model):
     discussion = models.ForeignKey(Discussion)
@@ -100,10 +80,6 @@ class Post(models.Model):
     def prefix(self):
         return 'post-%d' % (self.pk or 0,)
 
-def post_notifications(sender, instance, created, **kwargs):
-    if created:
-        notify_discussion_subscribers(instance.discussion, instance)
-models.signals.post_save.connect(post_notifications, sender=Post)
 
 class Comment(models.Model):
     post = models.ForeignKey(Post)
@@ -126,6 +102,36 @@ class Comment(models.Model):
             time=time(self.time),
             date=date(self.time),
         )
+
+
+@receiver(post_save, sender=Discussion)
+def create_discussion_notice_type(sender, instance, **kwargs):
+    # If display or diary title has changed notification details will be updated or created for new diary.
+    instance.create_notice_type()
+
+
+@receiver(pre_delete, sender=Discussion)
+def delete_discussion_notice_type(sender, instance, **kwargs):
+    instance.notice_type.delete()
+
+
+def notify_discussion_subscribers(discussion, instance):
+    """
+        Notifies all users who have their notification settings set to True for given discussion
+        instance parameter here is either Post or Comment
+    """
+    notification_label = discussion.notification_label
+    users = User.objects.filter(
+            noticesetting__send=True,
+            noticesetting__notice_type__label=notification_label).exclude(id=instance.user.id).distinct()
+    send(users, notification_label, {'discussion': discussion}, now=True)
+
+
+def post_notifications(sender, instance, created, **kwargs):
+    if created:
+        notify_discussion_subscribers(instance.discussion, instance)
+models.signals.post_save.connect(post_notifications, sender=Post)
+
 
 def comment_notifications(sender, instance, created, **kwargs):
     if created:
