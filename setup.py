@@ -11,7 +11,10 @@ setup(
     name = "django-discussion",
     packages = find_packages(),
     include_package_data=True,
-    install_requires = ['django-orderable>=1.0.1'],
+    install_requires = [
+        'django-orderable>=1.0.1',
+        'incuna-notification>=0.3.2',
+        ],
     version = get_version(),
     description = "",
     author = "Incuna Ltd",
