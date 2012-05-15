@@ -30,7 +30,7 @@ class SearchForm(forms.Form):
 
 class SubscribeForm(forms.Form):
     send = forms.ModelMultipleChoiceField(NoticeSetting.objects, required=False,
-                                                   label=u'',
+                                                   label=u'Notify me with updates from this discussion by',
                                                    widget=forms.CheckboxSelectMultiple, )
     subscribtion_update = forms.CharField(label='', widget=forms.HiddenInput)
 

@@ -1,5 +1,4 @@
 from django.contrib.auth.decorators import login_required
-from django.core import signals
 from django.core.urlresolvers import reverse
 from django.views.generic import CreateView, DetailView, ListView, FormView
 from django.views.generic.list import BaseListView
@@ -9,8 +8,7 @@ from discussion.forms import CommentForm, PostForm, SearchForm, SubscribeForm
 from discussion.models import Discussion, Comment, Post
 from discussion.utils import class_view_decorator
 
-from notification.models import get_all_notification_settings
-
+from notification.models import get_notification_settings
 
 class SearchFormMixin(object):
     """Add the basic search form to your view."""
@@ -32,14 +30,7 @@ class SearchFormMixin(object):
         """
         Returns the keyword arguments for instanciating the search form.
         """
-        kwargs = {'initial': self.get_search_initial()}
-        if self.request.method in ('POST', 'PUT'):
-            kwargs.update({
-                'data': self.request.POST,
-                'files': self.request.FILES,
-            })
-
-        return kwargs
+        return {'initial': self.get_search_initial()}
 
     def get_search_initial(self):
         """
@@ -84,7 +75,10 @@ class DiscussionView(SearchFormMixin, DetailView):
         self.search_initial.update({'discussion': self.object})
         context = super(DiscussionView, self).get_context_data(**kwargs)
         initial={'send':[ ns.pk for ns in self.get_notice_settings_initial()]}
-        context.update({'form': PostForm(), 'subscribe_form': SubscribeForm(qs=self.get_notice_settings(), initial=initial)})
+        context.update({
+            'form': PostForm(),
+            'subscribe_form': SubscribeForm(qs=self.get_notice_settings(), initial=initial)
+            })
         return context
 
     def post(self, request, *args, **kwargs):
@@ -207,3 +201,19 @@ class Search(BaseListView, FormView):
     def get_success_url(self):
         """Defined in case we ever get sent to it by accident"""
         return reverse('discussion_search')
+
+
+    def get_search_form_kwargs(self):
+        """
+        Returns the keyword arguments for instanciating the search form.
+        """
+        kwargs = super(Search, self).get_search_form_kwargs()
+        if self.request.method in ('POST', 'PUT'):
+            kwargs.update({
+                'data': self.request.POST,
+                'files': self.request.FILES,
+            })
+
+        return kwargs
+
+    

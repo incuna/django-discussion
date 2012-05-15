@@ -6,10 +6,9 @@ from django.template.defaultfilters import date, time
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 
-
-from notification import models as notification
-
+from notification.models import NoticeType, create_notice_type, send
 from orderable.models import Orderable
+
 
 class Discussion(Orderable):
     user = models.ForeignKey(User)
@@ -31,7 +30,7 @@ class Discussion(Orderable):
 
     @property
     def notification_display(self):
-        return ("Reminder for %s." % self.name)[:50]
+        return ("Notification for %s." % self.name)[:50]
 
     @property
     def notice_type(self):
@@ -40,11 +39,16 @@ class Discussion(Orderable):
             If it does not exist then the notice type will be created.
         """
         self.create_notice_type()
-        return notification.NoticeType.objects.get(label=self.notification_label)
+        return NoticeType.objects.get(label=self.notification_label)
 
     def create_notice_type(self):
         """Create (or update) a notice type for discussion instance ."""
-        notification.create_notice_type(self.notification_label, self.notification_display, "A new post has been added .", default=0)
+        create_notice_type(
+                label=self.notification_label,
+                display=self.notification_display,
+                description="A new post has been added .",
+                slug=self._meta.app_label,
+                default=0)
 
 @receiver(post_save, sender=Discussion)
 def create_discussion_notice_type(sender, instance, **kwargs):
@@ -59,12 +63,14 @@ def delete_discussion_notice_type(sender, instance, **kwargs):
 def notify_discussion_subscribers(discussion, instance):
     """
         Notifies all users who have their notification settings set to True for given discussion
-        instance parameter here is either Post or Comment 
+        instance parameter here is either Post or Comment
     """
     notification_label = discussion.notification_label
-    users = User.objects.filter(noticesetting__send=True, noticesetting__notice_type__label=notification_label).exclude(id=instance.user.id).distinct()
-    notification.send(users, notification_label, {'discussion': discussion })
-    
+    users = User.objects.filter(
+            noticesetting__send=True, 
+            noticesetting__notice_type__label=notification_label).exclude(id=instance.user.id).distinct()
+    send(users, notification_label, {'discussion': discussion }, now=True)
+
 class Post(models.Model):
     discussion = models.ForeignKey(Discussion)
     user = models.ForeignKey(User)
