@@ -1,5 +1,6 @@
 from django.contrib import admin
 from discussion.models import Comment, Discussion, Post
+from orderable.admin import OrderableAdmin
 
 
 class CommentInline(admin.TabularInline):
@@ -13,7 +14,7 @@ class PostAdmin(admin.ModelAdmin):
     list_filter = ('discussion',)
 
 
-class DiscussionAdmin(admin.ModelAdmin):
+class DiscussionAdmin(OrderableAdmin):
     prepopulated_fields = {
         'slug': ('name',)
     }

@@ -9,8 +9,9 @@ from django.dispatch import receiver
 
 from notification import models as notification
 
+from orderable.models import Orderable
 
-class Discussion(models.Model):
+class Discussion(Orderable):
     user = models.ForeignKey(User)
     name = models.CharField(max_length=255)
     slug = models.SlugField()
