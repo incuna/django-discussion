@@ -1,12 +1,15 @@
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 from django.views.generic import CreateView, DetailView, ListView, FormView
 from django.views.generic.list import BaseListView
 from django.db.models import Q
 
-from discussion.forms import CommentForm, PostForm, SearchForm
+from discussion.forms import CommentForm, PostForm, SearchForm, SubscribeForm
 from discussion.models import Discussion, Comment, Post
 from discussion.utils import class_view_decorator
+
+from notification.models import get_notification_settings
 
 
 class SearchFormMixin(object):
@@ -29,14 +32,7 @@ class SearchFormMixin(object):
         """
         Returns the keyword arguments for instanciating the search form.
         """
-        kwargs = {'initial': self.get_search_initial()}
-        if self.request.method in ('POST', 'PUT'):
-            kwargs.update({
-                'data': self.request.POST,
-                'files': self.request.FILES,
-            })
-
-        return kwargs
+        return {'initial': self.get_search_initial()}
 
     def get_search_initial(self):
         """
@@ -70,12 +66,60 @@ class DiscussionList(SearchFormMixin, ListView):
 @class_view_decorator(login_required)
 class DiscussionView(SearchFormMixin, DetailView):
     model = Discussion
+    notice_form = SubscribeForm
+
+    def get_notice_settings(self):
+        return get_notification_settings(self.request.user, self.object.notification_label)
+
+    def get_notice_settings_initial(self):
+        return self.get_notice_settings().filter(send=True)
+
+    def get_notice_form(self, form_class):
+        return form_class(**self.get_notice_form_kwargs())
+
+    def get_notice_form_kwargs(self):
+        kwargs = {
+                'initial': {'send': self.get_notice_settings_initial().values_list('pk', flat=True)},
+                'qs': self.get_notice_settings(),
+                }
+        if self.request.method in ('POST', 'PUT'):
+            kwargs.update({
+                'data': self.request.POST,
+                'files': self.request.FILES,
+            })
+        return kwargs
+
+    def get_search_initial(self):
+        initial = {}
+        initial.update(**super(DiscussionView, self).get_search_initial())
+        initial.update({'discussion': self.object})
+        return initial
 
     def get_context_data(self, **kwargs):
-        self.search_initial.update({'discussion': self.object})
         context = super(DiscussionView, self).get_context_data(**kwargs)
-        context['form'] = PostForm()
+        context.update({'form': PostForm()})
         return context
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_notice_form(self.notice_form)
+        context = self.get_context_data(object=self.object, subscribe_form=form)
+        return self.render_to_response(context)
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_notice_form(self.notice_form)
+
+        if form.is_valid():
+            send_settings = [s.pk for s in form.cleaned_data['send']]
+            notice_settings = self.get_notice_settings()
+            notice_settings.filter(id__in=send_settings).update(send=True)
+            notice_settings.exclude(id__in=send_settings).update(send=False)
+
+            return HttpResponseRedirect(request.path)
+        else:
+            context = self.get_context_data(object=self.object, subscribe_form=form)
+            return self.render_to_response(context)
 
 
 @class_view_decorator(login_required)
@@ -93,6 +137,7 @@ class CreatePost(DiscussionMixin, CreateView):
         context = super(CreatePost, self).get_context_data(**kwargs)
         context['discussion'] = self.discussion
         return context
+
 
 @class_view_decorator(login_required)
 class PostView(DiscussionMixin, CreateView):
@@ -141,11 +186,11 @@ class PostView(DiscussionMixin, CreateView):
             return super(PostView, self).form_valid(form)
 
     def form_invalid(self, form):
-       if self.request.is_ajax():
-           self.template_name = self.ajax_form_invalid_template_name
-           return self.render_to_response(self.get_context_data(form=form), status=400)
-       else:
-           return super(PostView, self).form_invalid(form)
+        if self.request.is_ajax():
+            self.template_name = self.ajax_form_invalid_template_name
+            return self.render_to_response(self.get_context_data(form=form), status=400)
+        else:
+            return super(PostView, self).form_invalid(form)
 
 
 @class_view_decorator(login_required)
@@ -188,3 +233,16 @@ class Search(BaseListView, FormView):
     def get_success_url(self):
         """Defined in case we ever get sent to it by accident"""
         return reverse('discussion_search')
+
+    def get_search_form_kwargs(self):
+        """
+        Returns the keyword arguments for instanciating the search form.
+        """
+        kwargs = super(Search, self).get_search_form_kwargs()
+        if self.request.method in ('POST', 'PUT'):
+            kwargs.update({
+                'data': self.request.POST,
+                'files': self.request.FILES,
+            })
+
+        return kwargs
