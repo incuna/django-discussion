@@ -1,4 +1,5 @@
 from django.utils.decorators import method_decorator
+from django.conf import settings
 
 
 def class_view_decorator(function_decorator):
@@ -17,3 +18,16 @@ def class_view_decorator(function_decorator):
 
     return simple_decorator
 
+
+# If this is set to `[]`, no uploads will be accepted.
+# If it is set to `None`, the whitelist will not be used.
+DISCUSSION_UPLOAD_EXTENSIONS = getattr(settings, 'DISCUSSION_UPLOAD_EXTENSIONS', [
+    'odt', 'odf', 'odp',  # Open/LibreOffice
+    'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx',  # MS Office
+    'pdf', 'gif', 'jpg', 'jpeg', 'png',  # Other sane defaults...
+])
+
+
+def file_extension(path):
+    """Get the file extension of a path/filename."""
+    return path.split('/')[-1].split('.')[-1]

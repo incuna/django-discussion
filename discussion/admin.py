@@ -12,12 +12,14 @@ class CommentInline(admin.TabularInline):
 class PostAdmin(admin.ModelAdmin):
     inlines = (CommentInline,)
     list_filter = ('discussion',)
+    list_display = ('discussion', 'time')
 
 
 class DiscussionAdmin(OrderableAdmin):
     prepopulated_fields = {
         'slug': ('name',)
     }
+    list_display = ('name', 'description')
 
 
 admin.site.register(Discussion, DiscussionAdmin)
