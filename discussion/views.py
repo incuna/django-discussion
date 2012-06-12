@@ -23,21 +23,15 @@ class SearchFormMixin(object):
         return context
 
     def get_search_form(self, form_class):
-        """
-        Returns an instance of the search form to be used in this view.
-        """
+        """Returns an instance of the search form to be used in this view."""
         return form_class(**self.get_search_form_kwargs())
 
     def get_search_form_kwargs(self):
-        """
-        Returns the keyword arguments for instanciating the search form.
-        """
+        """Returns the keyword arguments for instanciating the search form."""
         return {'initial': self.get_search_initial()}
 
     def get_search_initial(self):
-        """
-        Returns the initial data to use for search forms on this view.
-        """
+        """Returns the initial data to use for search forms on this view."""
         return self.search_initial
 
 
@@ -204,9 +198,7 @@ class Search(BaseListView, FormView):
                                                              object_list=self.get_queryset()))
 
     def form_valid(self, form):
-        """
-        Using the name field try to find any posts that match.
-        """
+        """Using the name field try to find any posts that match."""
         search_term = form.cleaned_data['search']
         object_list = self.model.objects.filter(Q(body__icontains=search_term) |
                                                 Q(comment__body__icontains=search_term))
@@ -235,14 +227,11 @@ class Search(BaseListView, FormView):
         return reverse('discussion_search')
 
     def get_search_form_kwargs(self):
-        """
-        Returns the keyword arguments for instanciating the search form.
-        """
+        """Returns the keyword arguments for instanciating the search form."""
         kwargs = super(Search, self).get_search_form_kwargs()
         if self.request.method in ('POST', 'PUT'):
             kwargs.update({
                 'data': self.request.POST,
                 'files': self.request.FILES,
             })
-
         return kwargs

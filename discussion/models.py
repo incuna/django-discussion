@@ -42,7 +42,7 @@ class Discussion(Orderable):
         return NoticeType.objects.get(label=self.notification_label)
 
     def create_notice_type(self):
-        """Create (or update) a notice type for discussion instance ."""
+        """Create (or update) a notice type for discussion instance."""
         create_notice_type(
                 label=self.notification_label,
                 display=self.notification_display,
@@ -137,4 +137,3 @@ def comment_notifications(sender, instance, created, **kwargs):
     if created:
         notify_discussion_subscribers(instance.post.discussion, instance)
 models.signals.post_save.connect(comment_notifications, sender=Comment)
-

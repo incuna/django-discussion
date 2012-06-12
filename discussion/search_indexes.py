@@ -22,5 +22,3 @@ class PostIndex(indexes.SearchIndex, indexes.Indexable):
 
     def index_queryset(self):
         return self.get_model().objects.all()
-
-

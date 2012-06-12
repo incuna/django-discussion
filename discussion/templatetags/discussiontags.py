@@ -7,6 +7,7 @@ re_img = re.compile(r'\.(bmp|jpe?g|jp2|jxr|gif|png|tiff?)$', re.IGNORECASE)
 
 register = template.Library()
 
+
 @register.inclusion_tag('discussion/limit_comments.html', takes_context=True)
 def limit_comments(context, post, first=2, last=1, limit=None, comments=None):
     """
@@ -19,9 +20,9 @@ def limit_comments(context, post, first=2, last=1, limit=None, comments=None):
 
     {% limit_comments post 3 2 %}
     """
-    
+
     if limit is None:
-        limit = first+last
+        limit = first + last
     if comments is None:
         comments = post.comment_set.all().select_related('post', 'post__discussion')
 
@@ -29,8 +30,8 @@ def limit_comments(context, post, first=2, last=1, limit=None, comments=None):
 
     if count > limit:
         first_comments = comments[:first]
-        last_comments = comments[count-last:]
-        hidden_count = count-first-last
+        last_comments = comments[count - last:]
+        hidden_count = count - first - last
     else:
         first_comments = comments
         last_comments = None
@@ -70,4 +71,3 @@ def is_image(value):
 @register.filter
 def highlight(text, word):
     return mark_safe(re.compile('(?P<word>%s)' % re.escape(word), re.IGNORECASE).sub("<span class='highlight'>\g<word></span>", text))
-
