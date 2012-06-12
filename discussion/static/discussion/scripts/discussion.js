@@ -59,8 +59,10 @@ $(function() {
       // Load the hidden comments with ajax
       $('.post-comments .show-hidden a', context).click(function() {
         $(this).closest('.post-comments').load($(this).attr('href')+' .post-comments', '', function(responseText, textStatus, XMLHttpRequest) {
-            init($(this));
-            })
+          var subElementHTML = $(this).find('.post-comments').html();
+          $(this).html(subElementHTML);
+          init($(this));
+        })
         return false;
       });
 
