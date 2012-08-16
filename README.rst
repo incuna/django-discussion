@@ -41,6 +41,7 @@ Add to your `urls.py`::
   urlpatterns = patterns('',
       '...',
       url(r'^discussion/', include('discussion.urls')),
+      url(r'^notifications/', include('notification.urls')),
       '...',
   )
 
