@@ -17,6 +17,51 @@ Installation
 Configuration
 -------------
 
+Settings
+========
+
+INSTALLED_APPS
+^^^^^^^^^^^^^^
+
+Add to your `settings.py`::
+
+  INSTALLED_APPS = (
+      '...',
+      'discussion',
+      'orderable',
+      'notification',
+      '...',
+  )
+
+URLS
+====
+
+Add to your `urls.py`::
+
+  urlpatterns = patterns('',
+      '...',
+      url(r'^discussion/', include('discussion.urls')),
+      '...',
+  )
+
+
+
+DISCUSSION_UPLOAD_EXTENSIONS
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A Whitelist of file extensions that can be uploaded to a discussion.
+If this is set to ``[]``, no uploads will be accepted.
+If it is set to ``None``, the whitelist will not be used.
+
+Default::
+
+  DISCUSSION_UPLOAD_EXTENSIONS = [
+      'odt', 'odf', 'odp',  # Open/LibreOffice
+      'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx',  # MS Office
+      'pdf', 'gif', 'jpg', 'jpeg', 'png',  # Other sane defaults...
+  ]
+
+
 JS/CSS
 ======
 
@@ -33,21 +78,3 @@ The default AJAX/javascript require three jQuery libraries:
   * jquery.form.js
     v3.01
     https://github.com/malsup/form/
-
-Settings
-========
-
-DISCUSSION_UPLOAD_EXTENSIONS
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-A Whitelist of file extensions that can be uploaded to a discussion.
-If this is set to ``[]``, no uploads will be accepted.
-If it is set to ``None``, the whitelist will not be used.
-
-Default::
-
-  DISCUSSION_UPLOAD_EXTENSIONS = [
-      'odt', 'odf', 'odp',  # Open/LibreOffice
-      'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx',  # MS Office
-      'pdf', 'gif', 'jpg', 'jpeg', 'png',  # Other sane defaults...
-  ]
